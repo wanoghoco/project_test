@@ -51,7 +51,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
           return;
         }
         if (type == DetectionType.FaceDetected) {
-          surfaceColor = const Color(0xff5724A6);
+          surfaceColor = const Color(0xff755AE2);
           setState(() {});
           return;
         }
@@ -124,7 +124,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: textureId != null
-                      ? Colors.white.withOpacity(0.32)
+                      ? Colors.transparent
                       : Colors.transparent),
             ),
             SizedBox(

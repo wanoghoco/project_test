@@ -2,6 +2,7 @@ import 'package:bvn_selfie/bvn_selfie.dart';
 import 'package:bvn_selfie/bvn_selfie_view.dart';
 import 'package:bvn_selfie/onFinished.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -21,10 +22,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           onImageCapture: (image) {
             print(image);
             provider.destroyer();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => OnFinishedScreen(path: image)));
+            Get.off(OnFinishedScreen(path: image));
           },
           onError: (String errorLog) {
             print(errorLog);
