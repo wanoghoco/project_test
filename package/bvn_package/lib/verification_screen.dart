@@ -1,5 +1,6 @@
 import 'package:bvn_selfie/bvn_selfie.dart';
 import 'package:bvn_selfie/bvn_selfie_view.dart';
+import 'package:bvn_selfie/onFinished.dart';
 import 'package:flutter/material.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -18,10 +19,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
         body: BvnSelfieView(
           allowTakePhoto: false,
           onImageCapture: (image) {
-            // print(image);
-            // provider.destroyer();
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => ShowResult(path: image)));
+            print(image);
+            provider.destroyer();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => OnFinishedScreen(path: image)));
           },
           onError: (String errorLog) {
             print(errorLog);
