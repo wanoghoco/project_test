@@ -28,7 +28,12 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>UISupportedInterfaceOrientations</key>
+		<key>NSPhotoLibraryUsageDescription</key>
+	<string>allow access for user facial verification</string>
+	<key>NSCameraUsageDescription</key>
+	<string>allow camera usage for verification</string>
+	<key>UISupportedInterfaceOrient
+	ations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>

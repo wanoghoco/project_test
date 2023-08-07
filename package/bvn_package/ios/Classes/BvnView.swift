@@ -24,7 +24,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
     var frontFacingCamera: AVCaptureDevice?
     var currentDevice: AVCaptureDevice!
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
-    var counter=1;
+    var counter=0;
     var step=1;
     var sampleBuffer:Any?;
     let uiView=UIView()
@@ -186,6 +186,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                      counter+=1;
                      if(counter>4){
                          step=2;
+                         self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
                      }
                      let actionMap: [String: Any] = [
                          "progress": counter
@@ -195,10 +196,14 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                  }
                  return;
              }
-            if(step==2){
-             step = -1;
-                takePhoto(didOutput: sampleBuffer);
+            self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
+            if(checkSmileAndBlick(face: face)){
+                if(step==2){
+                 step = -1;
+                    takePhoto(didOutput: sampleBuffer);
+                }
             }
+           
 
          }
 
@@ -232,8 +237,8 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
 
         if (face.hasSmilingProbability&&face.hasLeftEyeOpenProbability) {
                 let smileProb = face.smilingProbability
-            let rightEyeOpenProb = face.rightEyeOpenProbability;
-                if(smileProb>0.95&&rightEyeOpenProb>0.75){
+           // let rightEyeOpenProb = face.rightEyeOpenProbability;
+                if(smileProb>0.85){
                     return true;
                 }
             }
