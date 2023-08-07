@@ -238,7 +238,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         if (face.hasSmilingProbability&&face.hasLeftEyeOpenProbability) {
                 let smileProb = face.smilingProbability
            // let rightEyeOpenProb = face.rightEyeOpenProbability;
-                if(smileProb>0.65){
+                if(smileProb>0.55){
                     return true;
                 }
             }
