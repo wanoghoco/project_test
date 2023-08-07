@@ -35,31 +35,41 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
     Future.delayed(const Duration(seconds: 15), () {
       if (mounted) {
         enabled = true;
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       }
     });
     instance = BvnServiceProvider(
         controller: BvnServiceProviderController(
       onTextureCreated: (textureID) {
         textureId = textureID;
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       },
       gesturetEvent: (DetectionType type) {
         if (type == DetectionType.NoFaceDetected) {
           surfaceColor = Colors.red;
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         if (type == DetectionType.FaceDetected) {
           surfaceColor = const Color(0xff755AE2);
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
       },
       actionRecongnition: (RecongnitionType recongnitionType) {
         if (recongnitionType == RecongnitionType.SMILE_AND_BLINK) {
           actionText = "SMILE AND BLINK";
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         if (recongnitionType == RecongnitionType.FROWN_ONLY) {
@@ -69,7 +79,9 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
         }
         if (recongnitionType == RecongnitionType.CLOSE_AND_OPEN_SLOWLY) {
           actionText = "CLOSE AND OPEN EYE SLOWLY";
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
           return;
         }
         if (recongnitionType == RecongnitionType.HEAD_ROTATE) {
@@ -78,7 +90,9 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
           return;
         }
         if (recongnitionType == RecongnitionType.SMILE_AND_OPEN_ONLY) {
-          actionText = "SMILE";
+          if (mounted) {
+            actionText = "SMILE";
+          }
           setState(() {});
         }
       },
