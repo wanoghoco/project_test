@@ -14,6 +14,7 @@ class Helpers:NSObject{
     static let imageCapture="image_capture";
     static let onError="onError";
     static let takePhoto="take_photo";
+    static let onProgressChange="onProgresChanged";
     static let showCameraView="showTextureView";
     static let  NO_FACE_DETECTED=0;
     static let FACE_DETECTED=1;

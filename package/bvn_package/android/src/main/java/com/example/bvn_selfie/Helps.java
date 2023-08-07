@@ -5,6 +5,7 @@ public class Helps {
     static String actionGesutre="action_gesture";
     static String imageCapture="image_capture";
     static String takePhoto="take_photo";
+    static String onProgressChange="onProgresChanged";
     static String onError="onError";
     static int  NO_FACE_DETECTED=0;
     static int FACE_DETECTED=1;

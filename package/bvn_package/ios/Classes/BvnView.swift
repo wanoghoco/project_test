@@ -24,7 +24,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
     var frontFacingCamera: AVCaptureDevice?
     var currentDevice: AVCaptureDevice!
     var cameraPreviewLayer: AVCaptureVideoPreviewLayer?
-    var counter=0;
+    var counter=1;
     var step=1;
     var sampleBuffer:Any?;
     let uiView=UIView()
@@ -48,6 +48,9 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
             
             if(call.method==Helpers.takePhoto){
                 self.takePhoto(didOutput: self.sampleBuffer as! CMSampleBuffer)
+            }
+            if(call.method=="destroyer"){
+                self.dispose();
             }
             result(true)
           
@@ -107,6 +110,11 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         
     }
     
+   public func dispose(){
+        captureSession.stopRunning();
+        
+    }
+    
     //capture delegete sends the output video buffers to MLKIT for processing
      func captureOutput(
             _ output: AVCaptureOutput,
@@ -162,7 +170,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                 let normalizedWidth = faceWidth / screenWidth
                 let normalizedHeight = faceHeight / screenHeight
 
-                if normalizedWidth < 0.75 {
+                if normalizedWidth < 0.45 {
                      step = 1
                 channel.invokeMethod(Helpers.facialGesture, arguments: self.noFaceMap)
                 break
@@ -171,67 +179,23 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
              //change the state of the gesture
             self.channel.invokeMethod(Helpers.facialGesture,arguments:self.faceMap);
              //detection steps 1
+            
              if(step==1){
-                 self.invokeGesture(actionType:Helpers.SMILE_AND_BLINK_ACTION);
-             if(checkSmileAndBlick(face: face)){
-                 counter+=1;
-                if(counter==2){
-                    counter=0;
-                    step=2;
-                }
-                 return;
-             }
-                 return;
-             }
-
-             //detection steps 2
-             if(step==2){
-                 self.invokeGesture(actionType:Helpers.FROWN_AND_BLINK_ACTION);
-             if(checkFrown(face: face)){
-                 counter=0;
-                 step=3;
-              return;
-                 }
-                 return;
-             }
-
-             if(step==3){
-                 self.invokeGesture(actionType:Helpers.CLOSE_AND_OPEN_EYE);
-                 if(closeAndOpen(face: face)){
-                     counter+=1;
-                     if(counter==2){
-                         counter=0;
-                         step=4;
-                     }
-                     return;
-                 }
-                 return;
-             }
-             //detection steps 1
-             if(step==4){
                  self.invokeGesture(actionType:Helpers.ROTATE_HEAD);
                  if(rotateHead(face: face)){
                      counter+=1;
-                     if(counter==2){
-                         counter=0;
-                         step=5;
+                     if(counter>4){
+                         step=2;
                      }
+                     let actionMap: [String: Any] = [
+                         "progress": counter
+                     ]
+                     self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
                  
                  }
                  return;
              }
-             if(step==5){
-                 self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
-                 if(checkSmileAndBlick(face: face)){
-                     counter+=1;
-                     if(counter==2){
-                         counter=0;
-                         step=6;
-                     }
-                 }
-                 return;
-             }
-            if(step==6){
+            if(step==2){
              step = -1;
                 takePhoto(didOutput: sampleBuffer);
             }
@@ -263,7 +227,6 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         ]
         channel.invokeMethod(Helpers.actionGesutre,arguments:actionMap);
     }
-    
     
     private func checkSmileAndBlick(face:Face)->Bool{
 

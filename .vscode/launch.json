@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "project_test",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "project_test (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "project_test (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "bvn_package",
+            "cwd": "package/bvn_package",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "bvn_package (profile mode)",
+            "cwd": "package/bvn_package",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "bvn_package (release mode)",
+            "cwd": "package/bvn_package",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

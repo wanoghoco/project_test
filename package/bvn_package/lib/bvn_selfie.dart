@@ -18,6 +18,10 @@ class BvnServiceProvider {
         controller.onImageCapture(call.arguments['imagePath']);
         return;
       }
+      if (call.method == "onProgresChanged") {
+        controller.onProgressChange(call.arguments['progress']);
+        return;
+      }
       if (call.method == "Facial_Gesture") {
         controller.gesturetEvent(call.arguments['type'] == 0
             ? DetectionType.NoFaceDetected
@@ -67,11 +71,13 @@ class BvnServiceProviderController {
   final Function(DetectionType) gesturetEvent;
   final Function(RecongnitionType) actionRecongnition;
   final Function(String) onImageCapture;
+  final Function(int) onProgressChange;
   final Function(BvnServiceProvider) onInit;
   BvnServiceProviderController(
       {required this.onTextureCreated,
       required this.onError,
       required this.gesturetEvent,
+      required this.onProgressChange,
       required this.onInit,
       required this.onImageCapture,
       required this.actionRecongnition});

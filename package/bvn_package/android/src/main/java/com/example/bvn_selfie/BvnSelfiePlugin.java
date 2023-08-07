@@ -30,8 +30,9 @@ public class BvnSelfiePlugin implements FlutterPlugin, MethodCallHandler, Activi
   private Activity flutterActivity;
   private SurfaceTexture surfaceTexture;
   private FlutterPluginBinding flutterBinding;
-  VerificationService verificationService;
-  @Override
+  private VerificationService verificationService;
+    TextureRegistry.SurfaceTextureEntry entry;
+    @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "bvn_selfie");
     flutterBinding=flutterPluginBinding;
@@ -121,16 +122,16 @@ public class BvnSelfiePlugin implements FlutterPlugin, MethodCallHandler, Activi
   }
 
  void  initializeService(){
-    TextureRegistry.SurfaceTextureEntry entry=flutterBinding.getTextureRegistry().createSurfaceTexture();
+    entry=flutterBinding.getTextureRegistry().createSurfaceTexture();
     surfaceTexture=entry.surfaceTexture();
    verificationService= new VerificationService(flutterActivity,surfaceTexture,this,entry.id());
   }
 
   private void destroy(){
+
     if(surfaceTexture!=null){
       verificationService.dispose();
-
-      surfaceTexture.release();
+     // surfaceTexture.release();
     }
   }
 
@@ -155,7 +156,20 @@ public class BvnSelfiePlugin implements FlutterPlugin, MethodCallHandler, Activi
     channel.invokeMethod(Helps.actionGesutre,hashMap);
   }
 
-  @Override
+    @Override
+    public void onProgressChanged(int count) {
+      flutterActivity.runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+              HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("progress",  count);
+         channel.invokeMethod(Helps.onProgressChange,hashMap);
+          }
+      });
+      
+    }
+
+    @Override
   public void onImageCapture(String imagePath) {
       flutterActivity.runOnUiThread(new Runnable() {
           @Override

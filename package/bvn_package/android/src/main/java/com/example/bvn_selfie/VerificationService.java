@@ -111,7 +111,6 @@ public class VerificationService implements ImageAnalysis.Analyzer {
       CameraSelector cameraSelector=new CameraSelector.Builder().
               requireLensFacing(CameraSelector.LENS_FACING_FRONT)
               .build();
-
       //preview used case
            Preview preview=new Preview.Builder()
                    .setTargetAspectRatio(screenAspectRatio)
@@ -207,83 +206,40 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     public void processFacials(List<Face> faces){
 
         if(faces.size()==0){
-            if(step<3){
-                step=1;
-            }
+
             callbacks.gestureCallBack(Helps.facialGesture,Helps.NO_FACE_DETECTED);
             return;
         }
         for (Face face : faces) {
-            Rect bounds = face.getBoundingBox();
-            if(bounds.width()<(getDisplay().widthPixels*0.75)){
-                if(step<3){
-                    step=1;
-                }
-                callbacks.gestureCallBack(Helps.facialGesture,Helps.NO_FACE_DETECTED);
-                break;
-            }
-            //change the state of the gesture
+            //Rect bounds = face.getBoundingBox();
+//            if(bounds.width()<(getDisplay().widthPixels*0.45)){
+//                callbacks.gestureCallBack(Helps.facialGesture,Helps.NO_FACE_DETECTED);
+//                break;
+//            }
             callbacks.gestureCallBack(Helps.facialGesture,Helps.FACE_DETECTED);
+
             //detection steps 1
             if(step==1){
-            callbacks.actionCallBack(Helps.SMILE_AND_BLINK_ACTION);
-            if(checkSmileAndBlick(face)){
-                counter+=1;
-               if(counter==2){
-                   counter=0;
-                   step=2;
-               }
-                return;
-            }
-                return;
-            }
-
-            //detection steps 2
-            if(step==2){
-             callbacks.actionCallBack(Helps.FROWN_AND_BLINK_ACTION);
-            if(checkFrown(face)){
-                counter=0;
-                step=3;
-             return;
-                }
-                return;
-            }
-
-            if(step==3){
-                callbacks.actionCallBack(Helps.CLOSE_AND_OPEN_EYE);
-                if(closeAndOpen(face)){
-                    counter+=1;
-                    if(counter==2){
-                        counter=0;
-                        step=4;
-                    }
-                    return;
-                }
-                return;
-            }
-            //detection steps 1
-            if(step==4){
                 callbacks.actionCallBack(Helps.ROTATE_HEAD);
                 if(rotateHead(face)){
-                  step=5;
-                }
-                return;
-            }
-            if(step==5){
-                callbacks.actionCallBack(Helps.SMILE_AND_OPEN_ACTION);
-                if(checkSmileAndBlick(face)){
                     counter+=1;
-                    if(counter==2){
-                        counter=0;
-                        step=6;
-                    }
+                  if(counter>=4){
+                      step=2;
+                      callbacks.actionCallBack(Helps.SMILE_AND_OPEN_ACTION);
+                  }
                 }
+                callbacks.onProgressChanged(counter);
                 return;
             }
-            if(step==6){
-                step=-1;
-                takePhoto();
+            callbacks.actionCallBack(Helps.SMILE_AND_OPEN_ACTION);
+
+            if(checkSmileAndBlick(face)){
+                if(step==2){
+                    step=-1;
+                    takePhoto();
+                }
             }
+
 
         }
 
@@ -312,7 +268,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
         if (face.getSmilingProbability() != null&&face.getRightEyeOpenProbability() != null) {
             float smileProb = face.getSmilingProbability();
             float rightEyeOpenProb = face.getRightEyeOpenProbability();
-            if(smileProb>0.95&&rightEyeOpenProb>0.75){
+            if(smileProb>0.55){
                 return true;
             }
         }
@@ -323,7 +279,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
         if (face.getSmilingProbability() != null) {
             float smileProb = face.getSmilingProbability();
 
-            if(smileProb<0.75){
+            if(smileProb<0.55){
                 return true;
             }
         }
@@ -358,9 +314,13 @@ public class VerificationService implements ImageAnalysis.Analyzer {
         return file;
     }
 
+    @SuppressLint("RestrictedApi")
     public  void dispose(){
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
            processCameraProvider.unbindAll();
+           processCameraProvider.shutdown();
+         //  surfaceTexture.release();
+         //  surfaceTexture.detachFromGLContext();
        }
    }
 

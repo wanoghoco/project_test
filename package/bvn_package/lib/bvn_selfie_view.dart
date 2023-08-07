@@ -27,6 +27,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
   late AnimationController _animationController;
   String? actionText;
   late BvnServiceProvider instance;
+  double count = 0;
 
   Color surfaceColor = Colors.red;
   int? textureId;
@@ -42,6 +43,9 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
     });
     instance = BvnServiceProvider(
         controller: BvnServiceProviderController(
+      onProgressChange: (progress) {
+        count = progress * 0.25;
+      },
       onTextureCreated: (textureID) {
         textureId = textureID;
         if (mounted) {
@@ -57,7 +61,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
           return;
         }
         if (type == DetectionType.FaceDetected) {
-          surfaceColor = const Color(0xff755AE2);
+          surfaceColor = Colors.transparent;
           if (mounted) {
             setState(() {});
           }
@@ -85,13 +89,13 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
           return;
         }
         if (recongnitionType == RecongnitionType.HEAD_ROTATE) {
-          actionText = "ROTATE HEAD";
+          actionText = "ROTATE HEAD SLOWLY";
           setState(() {});
           return;
         }
         if (recongnitionType == RecongnitionType.SMILE_AND_OPEN_ONLY) {
           if (mounted) {
-            actionText = "SMILE";
+            actionText = "☺️ SMILE ☺️";
           }
           setState(() {});
         }
@@ -140,6 +144,12 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
                   color: textureId != null
                       ? Colors.transparent
                       : Colors.transparent),
+              child: CircularProgressIndicator(
+                color: surfaceColor != Colors.transparent
+                    ? Colors.transparent
+                    : const Color(0xff755AE2),
+                value: count,
+              ),
             ),
             SizedBox(
               width: size.width,
@@ -190,8 +200,10 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
             ),
             Image.asset(
               loadAsset("frame_cover.png"),
-              color: const Color(0xff755AE2),
-              width: size.width * 0.76,
+              color: surfaceColor == Colors.transparent
+                  ? const Color(0xff755AE2)
+                  : surfaceColor,
+              width: size.width * 0.8,
             ),
             if (widget.allowTakePhoto &&
                 enabled &&
@@ -227,6 +239,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
 
   @override
   void dispose() {
+    textureId = null;
     _animationController.dispose();
     super.dispose();
   }
