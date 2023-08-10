@@ -221,15 +221,29 @@ public class VerificationService implements ImageAnalysis.Analyzer {
             //detection steps 1
             if(step==1){
                 callbacks.actionCallBack(Helps.ROTATE_HEAD);
-                if(rotateHead(face)){
+                if(rotateHeadX(face)&&counter==0){
                     counter+=1;
-                  if(counter>=4){
-                      step=2;
-                      callbacks.actionCallBack(Helps.SMILE_AND_OPEN_ACTION);
-                  }
+                    callbacks.onProgressChanged(counter);
+                    return;
                 }
-                callbacks.onProgressChanged(counter);
-                return;
+                if(rotateHeadY(face)&&counter==1){
+                    counter+=1;
+                    callbacks.onProgressChanged(counter);
+                    return;
+                }
+                if(rotateHeadXNEG(face)&&counter==2){
+                    counter+=1;
+                    callbacks.onProgressChanged(counter);
+                    return;
+                }
+                if(rotateHeadYNEG(face)&&counter==3){
+                    counter+=1;
+                    step=2;
+                    callbacks.onProgressChanged(counter);
+                    return;
+                }
+               callbacks.actionCallBack(Helps.ROTATE_HEAD);
+            return;
             }
             callbacks.actionCallBack(Helps.SMILE_AND_OPEN_ACTION);
 
@@ -275,34 +289,48 @@ public class VerificationService implements ImageAnalysis.Analyzer {
         return false;
     }
 
-    private  boolean checkFrown(Face face){
-        if (face.getSmilingProbability() != null) {
-            float smileProb = face.getSmilingProbability();
 
-            if(smileProb<0.55){
-                return true;
-            }
-        }
-        return false;
-    }
 
-    private  boolean closeAndOpen(Face face){
-        if (face.getLeftEyeOpenProbability() != null) {
-            float leftEyeOpenProb = face.getLeftEyeOpenProbability();
-            if(leftEyeOpenProb<0.85){
-                return true;
-            }
-        }
-        return false;
-    }
+    private boolean rotateHeadX(Face face){
 
-    private boolean rotateHead(Face face){
-        float degreesZ =face.getHeadEulerAngleZ();
-        if (degreesZ > 3) {
+        float degreesX =face.getHeadEulerAngleX();
+        if (degreesX > 25) {
+
            return true;
         }
         return false;
     }
+    private boolean rotateHeadY(Face face){
+
+        float degreesY =face.getHeadEulerAngleY();
+        if (degreesY > 25) {
+
+            return true;
+        }
+        return false;
+    }
+
+    private boolean rotateHeadXNEG(Face face){
+
+        float degreesX =face.getHeadEulerAngleX();
+        if (degreesX < -10) {
+
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean rotateHeadYNEG(Face face){
+
+        float degreesY =face.getHeadEulerAngleY();
+        if (degreesY < -10) {
+
+            return true;
+        }
+        return false;
+    }
+
 
     private File saveFile(){
 

@@ -28,6 +28,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
   String? actionText;
   late BvnServiceProvider instance;
   double count = 0;
+  double before = 0;
 
   Color surfaceColor = Colors.red;
   int? textureId;
@@ -44,7 +45,9 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
     instance = BvnServiceProvider(
         controller: BvnServiceProviderController(
       onProgressChange: (progress) {
+        before = count;
         count = progress * 0.25;
+        setState(() {});
       },
       onTextureCreated: (textureID) {
         textureId = textureID;
@@ -130,27 +133,30 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
           alignment: Alignment.center,
           children: [
             Container(
-              height: size.width * 0.76,
-              width: size.width * 0.76,
+              height: size.width * 0.82,
+              width: size.width * 0.82,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: textureId != null ? surfaceColor : Colors.transparent),
             ),
             Container(
-              height: size.width * 0.76,
-              width: size.width * 0.76,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: textureId != null
-                      ? Colors.transparent
-                      : Colors.transparent),
-              child: CircularProgressIndicator(
-                color: surfaceColor != Colors.transparent
-                    ? Colors.transparent
-                    : const Color(0xff755AE2),
-                value: count,
-              ),
-            ),
+                height: size.width * 0.76,
+                width: size.width * 0.76,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: textureId != null
+                        ? Colors.transparent
+                        : Colors.transparent),
+                child: TweenAnimationBuilder<double>(
+                    tween: Tween<double>(begin: before, end: count),
+                    duration: const Duration(milliseconds: 500),
+                    builder: (context, value, _) => CircularProgressIndicator(
+                          strokeWidth: 24,
+                          color: surfaceColor != Colors.transparent
+                              ? Colors.transparent
+                              : const Color(0xff755AE2),
+                          value: value,
+                        ))),
             SizedBox(
               width: size.width,
               height: size.height,
@@ -189,7 +195,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
               ),
             ),
             Positioned(
-              top: size.height * 0.24,
+              top: size.height * 0.22,
               child: Text(
                 (actionText ?? "PLACE YOUR FACE PROPERLY").toUpperCase(),
                 style: const TextStyle(
@@ -203,7 +209,7 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
               color: surfaceColor == Colors.transparent
                   ? const Color(0xff755AE2)
                   : surfaceColor,
-              width: size.width * 0.8,
+              width: size.width * 0.85,
             ),
             if (widget.allowTakePhoto &&
                 enabled &&

@@ -18,7 +18,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
   bool _isBusy = false;
   CustomPaint? _customPaint;
   ValueNotifier nt = ValueNotifier("");
-  String? _text;
+  String? text;
   final _cameraLensDirection = CameraLensDirection.back;
 
   @override
@@ -74,7 +74,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
     if (_isBusy) return;
     _isBusy = true;
     setState(() {
-      _text = '';
+      text = '';
     });
     final barcodes = await _barcodeScanner.processImage(inputImage);
     if (inputImage.metadata?.size != null &&
@@ -95,7 +95,7 @@ class _BarCodeScannerState extends State<BarCodeScanner> {
         text += 'Barcode: ${barcode.rawValue}\n\n';
       }
       print(text);
-      _text = text;
+      text = text;
       _customPaint = null;
     }
     _isBusy = false;

@@ -170,7 +170,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                 let normalizedWidth = faceWidth / screenWidth
                 let normalizedHeight = faceHeight / screenHeight
 
-                if normalizedWidth < 0.45 {
+                if normalizedWidth < 0.88 {
                      step = 1
                 channel.invokeMethod(Helpers.facialGesture, arguments: self.noFaceMap)
                 break
@@ -182,17 +182,42 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
             
              if(step==1){
                  self.invokeGesture(actionType:Helpers.ROTATE_HEAD);
-                 if(rotateHead(face: face)){
+                 if(rotateHeadX(face: face)&&counter==0){
                      counter+=1;
-                     if(counter>4){
-                         step=2;
-                         self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
-                     }
                      let actionMap: [String: Any] = [
                          "progress": counter
                      ]
                      self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                     return;
+                 }
+                 if(rotateHeadY(face: face)&&counter==1){
+                     counter+=1;
+                     let actionMap: [String: Any] = [
+                         "progress": counter
+                     ]
+                     self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                     return;
+                 }
                  
+                 if(rotateHeadXNEG(face: face)&&counter==2){
+                     counter+=1;
+                     let actionMap: [String: Any] = [
+                         "progress": counter
+                     ]
+                     self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                     return;
+                 }
+                 
+                 if(rotateHeadYNEG(face: face)&&counter==3){
+                     counter+=1;
+                     let actionMap: [String: Any] = [
+                         "progress": counter
+                     ]
+                     
+                     self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                     self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
+                     step=2;
+                     return;
                  }
                  return;
              }
@@ -238,7 +263,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         if (face.hasSmilingProbability&&face.hasLeftEyeOpenProbability) {
                 let smileProb = face.smilingProbability
            // let rightEyeOpenProb = face.rightEyeOpenProbability;
-                if(smileProb>0.55){
+                if(smileProb>0.65){
                     return true;
                 }
             }
@@ -264,17 +289,56 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
             }
             return false;
         }
+    
+    
+    
+    
 
-    private func rotateHead(face:Face)->Bool{
-        if(face.hasHeadEulerAngleZ){
-            let degreesZ = face.headEulerAngleZ
-                if (degreesZ > 3) {
+    private func rotateHeadX(face:Face)->Bool{
+        if(face.hasHeadEulerAngleX){
+            if (face.headEulerAngleX > 30) {
                    return true;
                 }
                 return false;
         }
         return false;
       }
+ 
+    private func rotateHeadY(face:Face)->Bool{
+        if(face.hasHeadEulerAngleY){
+            if (face.headEulerAngleY > 30) {
+                   return true;
+                }
+                return false;
+        }
+        return false;
+      }
+    
+    
+    
+    
+    private func rotateHeadXNEG(face:Face)->Bool{
+        if(face.hasHeadEulerAngleX){
+            if (face.headEulerAngleX < -10) {
+                   return true;
+                }
+                return false;
+        }
+        return false;
+      }
+
+    
+    private func rotateHeadYNEG(face:Face)->Bool{
+        if(face.hasHeadEulerAngleY){
+            if (face.headEulerAngleY < -10) {
+                   return true;
+                }
+                return false;
+        }
+        return false;
+      }
+    
+
 
      
     
