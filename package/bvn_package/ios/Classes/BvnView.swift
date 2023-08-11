@@ -142,10 +142,6 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         let faceDetector = FaceDetector.faceDetector(options: options)
         weak var weakSelf = self
         faceDetector.process(visionImage) { faces, error in
-          guard let strongSelf = weakSelf else {
-              self.step = 1
-              self.channel.invokeMethod(Helpers.facialGesture,arguments: self.noFaceMap);            return
-          }
           guard error == nil, let faces = faces, !faces.isEmpty else {
               self.step = 1
               self.channel.invokeMethod(Helpers.facialGesture,arguments:self.noFaceMap);
@@ -168,13 +164,13 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                 let screenWidth = UIScreen.main.bounds.width
                 let screenHeight = UIScreen.main.bounds.height
                 let normalizedWidth = faceWidth / screenWidth
-                let normalizedHeight = faceHeight / screenHeight
+               // let normalizedHeight = faceHeight / screenHeight
 
-                if normalizedWidth < 0.88 {
-                     step = 1
-                channel.invokeMethod(Helpers.facialGesture, arguments: self.noFaceMap)
-                break
-            }
+               // if normalizedWidth < 0.88 {
+                 //    step = 1
+               // channel.invokeMethod(Helpers.facialGesture, arguments: self.noFaceMap)
+               // break
+              //}
             
              //change the state of the gesture
             self.channel.invokeMethod(Helpers.facialGesture,arguments:self.faceMap);
@@ -296,7 +292,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
 
     private func rotateHeadX(face:Face)->Bool{
         if(face.hasHeadEulerAngleX){
-            if (face.headEulerAngleX > 28) {
+            if (face.headEulerAngleX > 25) {
                    return true;
                 }
                 return false;
@@ -306,7 +302,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
  
     private func rotateHeadY(face:Face)->Bool{
         if(face.hasHeadEulerAngleY){
-            if (face.headEulerAngleY > 28) {
+            if (face.headEulerAngleY > 25) {
                    return true;
                 }
                 return false;
