@@ -52,6 +52,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         builder: (context) => const VerificationSuccessful()));
                 return;
               }
+              Navigator.pop(context);
             } catch (ex) {}
           },
           onError: (String errorLog) {
