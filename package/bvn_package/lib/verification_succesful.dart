@@ -1,16 +1,20 @@
+import 'dart:io';
+
 import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:bvn_selfie/back_button.dart';
-import 'package:bvn_selfie/verification_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 
-class MainIntro extends StatefulWidget {
-  const MainIntro({super.key});
+class VerificationSuccessful extends StatefulWidget {
+  const VerificationSuccessful({super.key});
 
   @override
-  State<MainIntro> createState() => _MainIntroState();
+  State<VerificationSuccessful> createState() => _VerificationSuccessfulState();
 }
 
-class _MainIntroState extends State<MainIntro> {
+class _VerificationSuccessfulState extends State<VerificationSuccessful> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +24,7 @@ class _MainIntroState extends State<MainIntro> {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () async {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const VerificationScreen()));
-              },
+              onPressed: () async {},
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
@@ -43,11 +42,11 @@ class _MainIntroState extends State<MainIntro> {
               const SizedBox(height: 12),
               const AppBackButton(),
               const SizedBox(height: 24),
-              const Text("Take a clear selfie.",
+              const Text("Your Identity is being verified.",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               const Text(
-                  "We need your BVN so you can get verified on Raven bank"),
+                  "Your identity is currently being verified. Please wait while we complete this process"),
               const SizedBox(
                 height: 24,
               ),
@@ -110,5 +109,23 @@ class _MainIntroState extends State<MainIntro> {
             ])),
       ),
     );
+  }
+
+  static Future<XFile> _compressImage(
+      {required File file,
+      required int compressQualityandroid,
+      required int compressQualityiOS}) async {
+    Directory tempDir = await getTemporaryDirectory();
+    print(tempDir.path);
+    String dir = "${tempDir.absolute.path}/test.jpeg";
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      dir,
+      quality: TargetPlatform.iOS == defaultTargetPlatform
+          ? compressQualityiOS
+          : compressQualityandroid,
+    );
+
+    return result!;
   }
 }

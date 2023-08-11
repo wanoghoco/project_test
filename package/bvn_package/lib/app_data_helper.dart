@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:bvn_selfie/main_intro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 
 class BVNPlugin {
   final String clientBVN;
@@ -67,4 +71,21 @@ class BVNPlugin {
     }
     _instance!.onFailure(payload);
   }
+}
+
+String loadAsset(String asset) {
+  return "packages/bvn_selfie/asset/$asset";
+}
+
+Future<XFile> compressImage({required File file}) async {
+  Directory tempDir = await getTemporaryDirectory();
+  print(tempDir.path);
+  String dir = "${tempDir.absolute.path}/bvn_photo.jpeg";
+  var result = await FlutterImageCompress.compressAndGetFile(
+    file.path,
+    dir,
+    quality: 60,
+  );
+
+  return result!;
 }

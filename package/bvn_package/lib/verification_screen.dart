@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:bvn_selfie/bvn_selfie.dart';
 import 'package:bvn_selfie/bvn_selfie_view.dart';
 import 'package:bvn_selfie/progress_loader.dart';
 import 'package:bvn_selfie/server/server.dart';
+import 'package:bvn_selfie/verification_succesful.dart';
 import 'package:flutter/material.dart';
 
 class VerificationScreen extends StatefulWidget {
@@ -15,22 +20,30 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   late BvnServiceProvider provider;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext appContext) {
     return Scaffold(
         backgroundColor: const Color(0xFF121212),
         body: BvnSelfieView(
           allowTakePhoto: false,
-          onImageCapture: (image) async {
-            Navigator.pop(context);
+          onImageCapture: (imagePath) async {
+            showProgressContainer(appContext);
             provider.destroyer();
-            showProgressContainer(context);
             Map<String, dynamic> form = {
               "token": BVNPlugin.getBVN(),
               "type": "bvn"
             };
-            var response = await Server(key: "").uploadFile(image, form);
-            Navigator.pop(context);
-            print(response);
+            String filePath = (await compressImage(file: File(imagePath))).path;
+            var response = await Server(key: "").uploadFile(filePath, form);
+            Navigator.pop(appContext);
+            try {
+              if (response['status'] == "success") {
+                Navigator.push(
+                    appContext,
+                    MaterialPageRoute(
+                        builder: (context) => const VerificationSuccessful()));
+                return;
+              }
+            } catch (ex) {}
           },
           onError: (String errorLog) {
             print(errorLog);
@@ -41,3 +54,5 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ));
   }
 }
+
+class _compressImage {}
