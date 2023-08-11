@@ -9,6 +9,7 @@ import 'package:bvn_selfie/progress_loader.dart';
 import 'package:bvn_selfie/server/server.dart';
 import 'package:bvn_selfie/verification_succesful.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -36,6 +37,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
             var response = await Server(key: "").uploadFile(filePath, form);
             Navigator.pop(appContext);
             try {
+              Fluttertoast.showToast(
+                  msg: response['message'],
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: const Color(0xff755AE2),
+                  textColor: Colors.white,
+                  fontSize: 16.0);
               if (response['status'] == "success") {
                 Navigator.push(
                     appContext,

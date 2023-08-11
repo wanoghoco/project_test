@@ -66,7 +66,10 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private double RATIO_4_3_VALUE = 4.0 / 3.0;
     private double RATIO_16_9_VALUE = 16.0 / 9.0;
     int counter=0;
+    boolean unlocked=false;
+    Thread thread ;
     private  int step=1;
+    private boolean running=false;
 
     VerificationService(Activity activity,SurfaceTexture surfaceTexture,BVNCallbacks callbacks,long textureId){
        this.surfaceTexture=surfaceTexture;
@@ -158,7 +161,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
                     new FaceDetectorOptions.Builder()
                             .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                             .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-                            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
                             .setMinFaceSize((float)0.1)
                             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
                             .build();
@@ -206,10 +209,34 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     public void processFacials(List<Face> faces){
 
         if(faces.size()==0){
-         
-            callbacks.gestureCallBack(Helps.facialGesture,Helps.NO_FACE_DETECTED);
+            unlocked=true;
+              if(!running&&unlocked){
+                  running=true;
+                  thread = new Thread(new Runnable(){
+                      @Override
+                      public void run() {
+                          try {
+                              Thread.sleep(3500);
+                          } catch (InterruptedException e) {
+                              e.printStackTrace();
+                          }
+                          if(unlocked){
+                              pluginActivity.runOnUiThread(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      callbacks.gestureCallBack(Helps.facialGesture,Helps.NO_FACE_DETECTED);
+                                  }
+                              });
+
+                              running=false;
+                          }
+                      }
+                  });
+                  thread.start();
+              }
             return;
         }
+        unlocked=false;
         for (Face face : faces) {
             //Rect bounds = face.getBoundingBox();
 //            if(bounds.width()<(getDisplay().widthPixels*0.45)){
@@ -294,7 +321,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private boolean rotateHeadX(Face face){
 
         float degreesX =face.getHeadEulerAngleX();
-        if (degreesX > 15) {
+        if (degreesX > 20) {
 
            return true;
         }
@@ -303,7 +330,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private boolean rotateHeadY(Face face){
 
         float degreesY =face.getHeadEulerAngleY();
-        if (degreesY > 15) {
+        if (degreesY > 20) {
 
             return true;
         }

@@ -40,8 +40,8 @@ class _AppMainState extends State<AppMain> {
                                     bearer:
                                         "RVSEC-d275c2c80ced595cbeff630921e31f35838b86380ba39b5ea560b291a0c27e6d2857019c39f946a418025524d9ec7f84-1677887040809",
                                     clientBvn: "22438527991",
-                                    failiure: () {},
-                                    success: () {}));
+                                    failiure: (data) {},
+                                    success: (data) {}));
                           },
                           child: const Column(
                             children: [

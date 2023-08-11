@@ -7,9 +7,9 @@ import 'package:path_provider/path_provider.dart';
 
 class BVNPlugin {
   final String clientBVN;
-  final Function onSucess;
+  final Function(dynamic) onSucess;
   final String bearerToken;
-  final Function onFailure;
+  final Function(dynamic) onFailure;
   static BVNPlugin? _instance;
 
   BVNPlugin._(
@@ -21,8 +21,8 @@ class BVNPlugin {
   static BVNPlugin getInstance(
           {required String bearer,
           required String clientBvn,
-          required Function success,
-          required Function failiure}) =>
+          required Function(dynamic) success,
+          required Function(dynamic) failiure}) =>
       BVNPlugin._(
           onFailure: failiure,
           onSucess: success,
@@ -63,13 +63,16 @@ class BVNPlugin {
 
   static Future<void> closePlugin(BuildContext context, bool success,
       {dynamic payload}) async {
-    Navigator.of(context, rootNavigator: true)
-        .popUntil((route) => route.isFirst);
     if (success) {
+      Navigator.of(context).popUntil(ModalRoute.withName("bvn_service"));
+      Navigator.pop(context);
       _instance!.onSucess(payload);
       return;
     }
+    Navigator.of(context).popUntil(ModalRoute.withName("bvn_service"));
+    Navigator.pop(context);
     _instance!.onFailure(payload);
+    return;
   }
 }
 
