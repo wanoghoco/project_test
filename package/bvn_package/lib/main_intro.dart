@@ -1,7 +1,6 @@
 import 'package:bvn_selfie/back_button.dart';
 import 'package:bvn_selfie/verification_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 class MainIntro extends StatefulWidget {
   const MainIntro({super.key});
@@ -21,7 +20,10 @@ class _MainIntroState extends State<MainIntro> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                Get.to(const VerificationScreen());
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VerificationScreen()));
               },
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(

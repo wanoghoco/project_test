@@ -313,7 +313,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private boolean rotateHeadXNEG(Face face){
 
         float degreesX =face.getHeadEulerAngleX();
-        if (degreesX < -7) {
+        if (degreesX < -5) {
 
             return true;
         }
@@ -324,7 +324,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private boolean rotateHeadYNEG(Face face){
 
         float degreesY =face.getHeadEulerAngleY();
-        if (degreesY < -7) {
+        if (degreesY < -5) {
 
             return true;
         }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:project_test/app_main.dart';
 
 class AppSplash extends StatefulWidget {
@@ -13,8 +12,10 @@ class _AppSplashState extends State<AppSplash> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(const Duration(seconds: 2), () {
-      Get.off(const AppMain());
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const AppMain()));
     });
   }
 

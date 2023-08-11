@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:bvn_selfie/back_button.dart';
-import 'package:bvn_selfie/main_intro.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 
 class OnFinishedScreen extends StatefulWidget {
   final String path;
@@ -23,9 +20,7 @@ class _OnFinishedScreenState extends State<OnFinishedScreen> {
             height: 50,
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                Get.to(const MainIntro());
-              },
+              onPressed: () {},
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),

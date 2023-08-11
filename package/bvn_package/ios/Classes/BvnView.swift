@@ -296,7 +296,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
 
     private func rotateHeadX(face:Face)->Bool{
         if(face.hasHeadEulerAngleX){
-            if (face.headEulerAngleX > 30) {
+            if (face.headEulerAngleX > 28) {
                    return true;
                 }
                 return false;
@@ -306,7 +306,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
  
     private func rotateHeadY(face:Face)->Bool{
         if(face.hasHeadEulerAngleY){
-            if (face.headEulerAngleY > 30) {
+            if (face.headEulerAngleY > 28) {
                    return true;
                 }
                 return false;
@@ -319,7 +319,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
     
     private func rotateHeadXNEG(face:Face)->Bool{
         if(face.hasHeadEulerAngleX){
-            if (face.headEulerAngleX < -7) {
+            if (face.headEulerAngleX < -5) {
                    return true;
                 }
                 return false;
@@ -330,7 +330,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
     
     private func rotateHeadYNEG(face:Face)->Bool{
         if(face.hasHeadEulerAngleY){
-            if (face.headEulerAngleY < -7) {
+            if (face.headEulerAngleY < -5) {
                    return true;
                 }
                 return false;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:project_test/splash.dart';
 
 main() {
@@ -16,6 +15,6 @@ class ProjectTestApp extends StatefulWidget {
 class _ProjectTestAppState extends State<ProjectTestApp> {
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(home: AppSplash());
+    return const MaterialApp(home: AppSplash());
   }
 }

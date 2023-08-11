@@ -1,7 +1,6 @@
-import 'package:bvn_selfie/intro.dart';
+import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:get/get.dart';
 import 'package:project_test/barcode_reader/barcode_scanner.dart';
 
 class AppMain extends StatefulWidget {
@@ -35,7 +34,14 @@ class _AppMainState extends State<AppMain> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            Get.to(const IntroBvnPage());
+                            BVNPlugin.startPlugin(
+                                context,
+                                BVNPlugin.getInstance(
+                                    bearer:
+                                        "RVSEC-d275c2c80ced595cbeff630921e31f35838b86380ba39b5ea560b291a0c27e6d2857019c39f946a418025524d9ec7f84-1677887040809",
+                                    clientBvn: "22438527991",
+                                    failiure: () {},
+                                    success: () {}));
                           },
                           child: const Column(
                             children: [
@@ -76,7 +82,11 @@ class _AppMainState extends State<AppMain> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            Get.to(const BarCodeScanner());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BarCodeScanner()));
                           },
                           child: const Column(
                             children: [
