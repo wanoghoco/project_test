@@ -15,6 +15,7 @@ class _MainIntroState extends State<MainIntro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
         Container(
             padding: const EdgeInsets.symmetric(horizontal: 24),
