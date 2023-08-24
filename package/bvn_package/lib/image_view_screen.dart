@@ -27,83 +27,105 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
       onWillPop: () async {
         return false;
       },
-      child: Scaffold(
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    onVerify();
-                  },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
-                      backgroundColor:
-                          MaterialStateProperty.all(BVNPlugin.getBaseColor())),
-                  child: Text(
-                    "Use this selfie",
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          bottomNavigationBar: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      onVerify();
+                    },
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8))),
+                        backgroundColor: MaterialStateProperty.all(
+                            BVNPlugin.getBaseColor())),
+                    child: Text(
+                      "Use this selfie",
+                      style: subtitle.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  )),
+              const SizedBox(height: 24),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const VerificationScreen()));
+                    },
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8))),
+                        backgroundColor: MaterialStateProperty.all(
+                            BVNPlugin.getBaseColor())),
+                    child: Text(
+                      "Re-take selfie",
+                      style: subtitle.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  )),
+              const SizedBox(height: 24)
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(children: [
+              const SizedBox(height: 34),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Take a clear selfie",
+                    style: headling1.copyWith(fontSize: 24)),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    "Ensure that your entire face is clearly visible within the provided frame.",
                     style: subtitle.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
-                )),
-            const SizedBox(height: 24),
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const VerificationScreen()));
-                  },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
-                      backgroundColor:
-                          MaterialStateProperty.all(BVNPlugin.getBaseColor())),
-                  child: Text(
-                    "Re-take selfie",
-                    style: subtitle.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
-                )),
-            const SizedBox(height: 24)
-          ],
+                        fontSize: 14, color: const Color(0xff8B8B8B))),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              SizedBox(
+                  height: size.height * 0.4,
+                  width: double.infinity,
+                  child: Image.file(
+                    File(widget.imagePath),
+                    fit: BoxFit.contain,
+                  )),
+              const SizedBox(
+                height: 24,
+              ),
+              Text("Is this clear enough?",
+                  style: bodyText.copyWith(color: Colors.black)),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                  "Make sure your face is clear enough and the photo is not blurry",
+                  textAlign: TextAlign.center,
+                  style: subtitle.copyWith(color: const Color(0xff8B8B8B))),
+              const SizedBox(
+                height: 16,
+              ),
+            ]),
+          ),
         ),
-        backgroundColor: Colors.white,
-        body: Column(children: [
-          const SizedBox(height: 24),
-          Text("Take a clear selfie", style: headling1.copyWith(fontSize: 20)),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-              "Ensure that your entire face is clearly visible within the provided frame.",
-              style: subtitle.copyWith(fontSize: 14)),
-          const SizedBox(
-            height: 16,
-          ),
-          SizedBox(
-              height: size.height * 0.4,
-              width: double.infinity,
-              child: Image.file(File(widget.imagePath))),
-          const SizedBox(
-            height: 16,
-          ),
-          Text("Is this clear enough?", style: bodyText.copyWith()),
-          Text(
-              "Make sure your face is clear enough and the photo is not blurry",
-              style: subtitle.copyWith()),
-          const SizedBox(
-            height: 16,
-          ),
-        ]),
       ),
     );
   }
@@ -131,7 +153,6 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
                 builder: (context) => const VerificationSuccessful()));
         return;
       }
-      Navigator.pop(context);
     } catch (ex) {}
   }
 }

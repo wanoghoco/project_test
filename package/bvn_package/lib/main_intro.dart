@@ -56,7 +56,7 @@ class _MainIntroState extends State<MainIntro> {
                       color: Colors.black)),
               const SizedBox(height: 8),
               Text("We need your BVN so you can get verified on Raven bank",
-                  style: subtitle),
+                  style: subtitle.copyWith(color: const Color(0xff8B8B8B))),
               const SizedBox(
                 height: 24,
               ),
@@ -79,15 +79,15 @@ class _MainIntroState extends State<MainIntro> {
                   children: [
                     Item(
                       asset: "no_glass.png",
-                      title: "No Glass",
+                      title: "No glass",
                     ),
                     Item(
                       asset: "no_mask.png",
-                      title: "No Face Mask",
+                      title: "No face mask",
                     ),
                     Item(
                       asset: "no_hat.png",
-                      title: "No Hat",
+                      title: "No hat",
                     ),
                   ],
                 ),
@@ -125,7 +125,9 @@ class Item extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4),
-          Text(title, style: subtitle.copyWith(color: BVNPlugin.getBaseColor()))
+          Text(title,
+              style: subtitle.copyWith(
+                  color: BVNPlugin.getBaseColor(), fontSize: 13))
         ],
       ),
     );

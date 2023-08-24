@@ -7,5 +7,4 @@ public interface BVNCallbacks {
     void onProgressChanged(int count);
     void onImageCapture(String imagePath);
     void onError(String error);
-
 }

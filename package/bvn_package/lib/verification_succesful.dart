@@ -48,9 +48,24 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: size.height * 0.04),
-                  Image.asset(
-                    loadAsset("success.png"),
-                    height: 300,
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Image.asset(
+                        loadAsset("success.png"),
+                        color: BVNPlugin.getBaseColor(),
+                        height: 300,
+                      ),
+                      Positioned(
+                        right: -34,
+                        bottom: 0,
+                        child: Image.asset(
+                          loadAsset("check.png"),
+                          color: BVNPlugin.getBaseColor(),
+                          height: 300,
+                        ),
+                      ),
+                    ],
                   )
                 ])),
       ),

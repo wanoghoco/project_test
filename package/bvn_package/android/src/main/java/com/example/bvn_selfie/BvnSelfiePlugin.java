@@ -32,25 +32,46 @@ public class BvnSelfiePlugin implements FlutterPlugin, MethodCallHandler, Activi
   private FlutterPluginBinding flutterBinding;
   private VerificationService verificationService;
     TextureRegistry.SurfaceTextureEntry entry;
+
+    public static String[] storge_permissions = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    public static String[] storge_permissions_33 = {
+            Manifest.permission.READ_MEDIA_IMAGES,
+            Manifest.permission.CAMERA
+    };
+    public static String permission[];
+
+
     @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permission = storge_permissions_33;
+        } else {
+            permission = storge_permissions;
+        }
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "bvn_selfie");
     flutterBinding=flutterPluginBinding;
     channel.setMethodCallHandler(this);
   }
 
-  public  boolean checkPermissionStatus(){
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if(flutterActivity.checkSelfPermission(Manifest.permission.CAMERA)== PackageManager.PERMISSION_DENIED||flutterActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
-        flutterActivity.requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},1114);
-        return false;
-      }
-      else{
-       return true;
-      }
+    boolean checkPermissionStatus(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for(int x=0; x<permission.length; x++){
+                if(flutterActivity.checkSelfPermission(permission[x])== PackageManager.PERMISSION_DENIED){
+                    flutterActivity.requestPermissions(permission,1114);
+                    return false;
+                }
+            }
+            return true;
+
+        }
+        return true;
     }
-    return true;
-  }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   @Override
