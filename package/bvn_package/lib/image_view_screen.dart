@@ -57,7 +57,7 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const VerificationScreen()));
@@ -125,7 +125,7 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
           textColor: Colors.white,
           fontSize: 16.0);
       if (response['status'] == "success") {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => const VerificationSuccessful()));

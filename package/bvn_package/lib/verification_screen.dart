@@ -24,10 +24,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
           allowTakePhoto: false,
           onImageCapture: (imagePath) async {
             provider.destroyer();
-            MaterialPageRoute(
-                builder: (context) => ImageViewScreen(
-                      imagePath: imagePath,
-                    ));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ImageViewScreen(
+                          imagePath: imagePath,
+                        )));
           },
           onError: (String errorLog) {
             Fluttertoast.showToast(
