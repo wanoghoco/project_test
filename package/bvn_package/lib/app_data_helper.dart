@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 class BVNPlugin {
   final String clientBVN;
+  final Color baseColor;
   final Function(dynamic) onSucess;
   final String bearerToken;
   final Function(dynamic) onFailure;
@@ -16,16 +17,19 @@ class BVNPlugin {
       {required this.clientBVN,
       required this.onFailure,
       required this.bearerToken,
+      required this.baseColor,
       required this.onSucess});
 
   static BVNPlugin getInstance(
           {required String bearer,
           required String clientBvn,
+          required Color baseColor,
           required Function(dynamic) success,
           required Function(dynamic) failiure}) =>
       BVNPlugin._(
           onFailure: failiure,
           onSucess: success,
+          baseColor: baseColor,
           clientBVN: clientBvn,
           bearerToken: bearer);
 
@@ -57,6 +61,10 @@ class BVNPlugin {
     return _instance!.clientBVN;
   }
 
+  static Color getBaseColor() {
+    return _instance!.baseColor;
+  }
+
   static String getBearer() {
     return _instance!.bearerToken;
   }
@@ -82,7 +90,6 @@ String loadAsset(String asset) {
 
 Future<XFile> compressImage({required File file}) async {
   Directory tempDir = await getTemporaryDirectory();
-  print(tempDir.path);
   String dir = "${tempDir.absolute.path}/bvn_photo.jpeg";
   var result = await FlutterImageCompress.compressAndGetFile(
     file.path,

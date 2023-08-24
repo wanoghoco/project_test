@@ -42,7 +42,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 1,
-                  backgroundColor: const Color(0xff755AE2),
+                  backgroundColor: BVNPlugin.getBaseColor(),
                   textColor: Colors.white,
                   fontSize: 16.0);
               if (response['status'] == "success") {

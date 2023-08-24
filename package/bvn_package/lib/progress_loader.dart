@@ -1,3 +1,4 @@
+import "package:bvn_selfie/app_data_helper.dart";
 import "package:flutter/material.dart";
 
 void showProgressContainer(BuildContext context,
@@ -31,8 +32,9 @@ class SendCheapProgressContainer extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     const SizedBox(width: 10),
-                    const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Color(0xff755AE2)),
+                    CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation(BVNPlugin.getBaseColor()),
                     ),
                     const SizedBox(width: 15),
                     Text(message,

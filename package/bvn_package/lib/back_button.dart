@@ -1,3 +1,4 @@
+import 'package:bvn_selfie/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class AppBackButton extends StatelessWidget {
@@ -24,7 +25,10 @@ class AppBackButton extends StatelessWidget {
               width: 8,
             ),
             Text("Back",
-                style: TextStyle(fontWeight: FontWeight.w600, color: textColor))
+                style: bodyText.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: textColor ?? Colors.black,
+                    fontSize: 14))
           ],
         ));
   }

@@ -1,5 +1,6 @@
 import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:bvn_selfie/back_button.dart';
+import 'package:bvn_selfie/textstyle.dart';
 import 'package:bvn_selfie/verification_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -30,8 +31,12 @@ class _MainIntroState extends State<MainIntro> {
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
                   backgroundColor:
-                      MaterialStateProperty.all(const Color(0xff755AE2))),
-              child: const Text("Verify Now"),
+                      MaterialStateProperty.all(BVNPlugin.getBaseColor())),
+              child: Text(
+                "Verify Now",
+                style: subtitle.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.w600),
+              ),
             )),
         const SizedBox(height: 24)
       ]),
@@ -43,71 +48,84 @@ class _MainIntroState extends State<MainIntro> {
               const SizedBox(height: 12),
               const AppBackButton(),
               const SizedBox(height: 24),
-              const Text("Take a clear selfie.",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("Take a clear selfie.",
+                  style: headling1.copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
               const SizedBox(height: 8),
-              const Text(
-                  "We need your BVN so you can get verified on Raven bank"),
+              Text("We need your BVN so you can get verified on Raven bank",
+                  style: subtitle),
               const SizedBox(
                 height: 24,
               ),
-              const Text("Tips", style: TextStyle(fontWeight: FontWeight.w700)),
+              Text("Tips",
+                  style: subtitle.copyWith(
+                      fontWeight: FontWeight.w700, fontSize: 14)),
               const SizedBox(
-                height: 12,
+                height: 8,
               ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 width: double.infinity,
+                height: 130,
                 decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xffEDE8FB)),
                     color: const Color(0xffFAFAFF),
                     borderRadius: BorderRadius.circular(12)),
-                child: Row(
+                child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            loadAsset("no_glass.png"),
-                            width: 54,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text("No Glass",
-                              style: TextStyle(color: Color(0xff755AE2)))
-                        ],
-                      ),
+                    Item(
+                      asset: "no_glass.png",
+                      title: "No Glass",
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            loadAsset("no_mask.png"),
-                            width: 54,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text("No Face Mask",
-                              style: TextStyle(color: Color(0xff755AE2)))
-                        ],
-                      ),
+                    Item(
+                      asset: "no_mask.png",
+                      title: "No Face Mask",
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            loadAsset("no_hat.png"),
-                            width: 54,
-                          ),
-                          const SizedBox(height: 8),
-                          const Text("No Hat",
-                              style: TextStyle(color: Color(0xff755AE2)))
-                        ],
-                      ),
-                    )
+                    Item(
+                      asset: "no_hat.png",
+                      title: "No Hat",
+                    ),
                   ],
                 ),
               )
             ])),
+      ),
+    );
+  }
+}
+
+class Item extends StatelessWidget {
+  final String asset;
+  final String title;
+  const Item({super.key, required this.asset, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              Image.asset(
+                loadAsset(asset),
+                color: BVNPlugin.getBaseColor(),
+                height: 54,
+                width: 54,
+              ),
+              Image.asset(
+                loadAsset("no.png"),
+                height: 54,
+                width: 54,
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(title, style: subtitle.copyWith(color: BVNPlugin.getBaseColor()))
+        ],
       ),
     );
   }

@@ -37,6 +37,7 @@ class _AppMainState extends State<AppMain> {
                             BVNPlugin.startPlugin(
                                 context,
                                 BVNPlugin.getInstance(
+                                    baseColor: const Color(0xFF0B8376),
                                     bearer: "",
                                     clientBvn: "",
                                     failiure: (data) {},

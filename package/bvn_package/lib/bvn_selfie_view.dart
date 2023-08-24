@@ -1,5 +1,7 @@
+import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:bvn_selfie/back_button.dart';
 import 'package:bvn_selfie/bvn_selfie.dart';
+import 'package:bvn_selfie/textstyle.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -132,84 +134,90 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Container(
-              height: size.width * 0.82,
-              width: size.width * 0.82,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: textureId != null ? surfaceColor : Colors.transparent),
-            ),
-            Container(
-                height: size.width * 0.76,
-                width: size.width * 0.76,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: textureId != null
-                        ? Colors.transparent
-                        : Colors.transparent),
-                child: TweenAnimationBuilder<double>(
-                    tween: Tween<double>(begin: before, end: count),
-                    duration: const Duration(milliseconds: 500),
-                    builder: (context, value, _) => CircularProgressIndicator(
-                          strokeWidth: 24,
-                          color: surfaceColor != Colors.transparent
-                              ? Colors.transparent
-                              : const Color(0xff755AE2),
-                          value: value,
-                        ))),
             SizedBox(
-              width: size.width,
               height: size.height,
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(1000),
-                  child: SizedBox(
-                    height: size.width * 0.74,
-                    width: size.width * 0.74,
-                    child: AspectRatio(
-                        aspectRatio: size.width / (size.width * 1.9),
-                        child: defaultTargetPlatform == TargetPlatform.android
-                            ? Texture(textureId: textureId!)
-                            : UiKitView(
-                                viewType: "bvnview_cam",
-                                creationParams: creationParams,
-                                creationParamsCodec:
-                                    const StandardMessageCodec(),
-                              )),
+              width: size.width,
+            ),
+            Positioned(
+              top: size.height * 0.03,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    height: size.width * 0.82,
+                    width: size.width * 0.82,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: textureId != null
+                            ? surfaceColor
+                            : Colors.transparent),
                   ),
-                ),
+                  Image.asset(
+                    loadAsset("frame_cover.png"),
+                    color: surfaceColor == Colors.transparent
+                        ? BVNPlugin.getBaseColor()
+                        : surfaceColor,
+                    width: size.width * 0.85,
+                  ),
+                  Container(
+                      height: size.width * 0.76,
+                      width: size.width * 0.76,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: textureId != null
+                              ? Colors.transparent
+                              : Colors.transparent),
+                      child: TweenAnimationBuilder<double>(
+                          tween: Tween<double>(begin: before, end: count),
+                          duration: const Duration(milliseconds: 500),
+                          builder: (context, value, _) =>
+                              CircularProgressIndicator(
+                                strokeWidth: 24,
+                                color: surfaceColor != Colors.transparent
+                                    ? Colors.transparent
+                                    : BVNPlugin.getBaseColor(),
+                                value: value,
+                              ))),
+                  SizedBox(
+                    width: size.width,
+                    height: size.height * 0.8,
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child: SizedBox(
+                          height: size.width * 0.74,
+                          width: size.width * 0.74,
+                          child: AspectRatio(
+                              aspectRatio: size.width / (size.width * 1.9),
+                              child: defaultTargetPlatform ==
+                                      TargetPlatform.android
+                                  ? Texture(textureId: textureId!)
+                                  : UiKitView(
+                                      viewType: "bvnview_cam",
+                                      creationParams: creationParams,
+                                      creationParamsCodec:
+                                          const StandardMessageCodec(),
+                                    )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Positioned(
-                top: size.height * 0.02,
+                top: size.height * 0.03,
                 left: 20,
                 child: const AppBackButton(textColor: Color(0xffEEEEEE))),
             Positioned(
-              top: size.height * 0.1,
-              left: 20,
-              right: 20,
-              child: const Text(
-                "Position your phone at eye level and ensure that your face fits within the oval",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xffEEEEEE)),
-              ),
-            ),
-            Positioned(
-              top: size.height * 0.22,
+              top: size.height * 0.14,
               child: Text(
                 (actionText ?? "PLACE YOUR FACE PROPERLY").toUpperCase(),
-                style: const TextStyle(
+                style: bodyText.copyWith(
                     fontSize: 18,
-                    color: Color(0xffEEEEEE),
+                    color: const Color(0xffEEEEEE),
                     fontWeight: FontWeight.w900),
               ),
-            ),
-            Image.asset(
-              loadAsset("frame_cover.png"),
-              color: surfaceColor == Colors.transparent
-                  ? const Color(0xff755AE2)
-                  : surfaceColor,
-              width: size.width * 0.85,
             ),
             if (widget.allowTakePhoto &&
                 enabled &&
@@ -236,7 +244,37 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
                       ],
                     ),
                   )),
-            ]
+            ],
+            Positioned(
+                top: size.height * 0.75,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color(0xffEDE8FB).withOpacity(0.1)),
+                      color: const Color(0xffFAFAFF).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Item(
+                        asset: "no_glass.png",
+                        title: "No Glass",
+                      ),
+                      Item(
+                        asset: "no_mask.png",
+                        title: "No Face Mask",
+                      ),
+                      Item(
+                        asset: "no_hat.png",
+                        title: "No Hat",
+                      ),
+                    ],
+                  ),
+                )),
           ],
         ),
       );
@@ -248,5 +286,41 @@ class _BvnSelfieViewState extends State<BvnSelfieView>
     textureId = null;
     _animationController.dispose();
     super.dispose();
+  }
+}
+
+class Item extends StatelessWidget {
+  final String asset;
+  final String title;
+  const Item({super.key, required this.asset, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(
+                loadAsset(asset),
+                color: BVNPlugin.getBaseColor(),
+                height: 40,
+                width: 40,
+              ),
+              Image.asset(
+                loadAsset("no.png"),
+                height: 44,
+                width: 44,
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(title,
+              style: subtitle.copyWith(color: Colors.white, fontSize: 12))
+        ],
+      ),
+    );
   }
 }

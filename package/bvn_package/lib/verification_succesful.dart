@@ -26,7 +26,7 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
                   backgroundColor:
-                      MaterialStateProperty.all(const Color(0xff755AE2))),
+                      MaterialStateProperty.all(BVNPlugin.getBaseColor())),
               child: const Text("Done"),
             )),
         const SizedBox(height: 24)

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bvn_selfie/app_data_helper.dart';
 import 'package:bvn_selfie/back_button.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class _OnFinishedScreenState extends State<OnFinishedScreen> {
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
                   backgroundColor:
-                      MaterialStateProperty.all(const Color(0xff755AE2))),
+                      MaterialStateProperty.all(BVNPlugin.getBaseColor())),
               child: const Text("Use This Photo"),
             )),
         const SizedBox(height: 24)
