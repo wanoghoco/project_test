@@ -1,4 +1,4 @@
-import 'package:bvn_selfie/textstyle.dart';
+import 'package:raven_verification/textstyle.dart';
 import 'package:flutter/material.dart';
 
 class AppBackButton extends StatelessWidget {
@@ -20,7 +20,8 @@ class AppBackButton extends StatelessWidget {
                     border: Border.all(color: Colors.grey.withOpacity(0.5)),
                     shape: BoxShape.circle,
                     color: Colors.grey.withOpacity(0.1)),
-                child: Icon(Icons.arrow_back, size: 14, color: textColor)),
+                child: Icon(Icons.arrow_back,
+                    size: 14, color: textColor ?? Colors.black)),
             const SizedBox(
               width: 8,
             ),

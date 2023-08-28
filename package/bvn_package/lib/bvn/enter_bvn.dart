@@ -1,18 +1,18 @@
-import 'package:bvn_selfie/app_data_helper.dart';
-import 'package:bvn_selfie/back_button.dart';
-import 'package:bvn_selfie/textstyle.dart';
-import 'package:bvn_selfie/verification_screen.dart';
+import 'package:raven_verification/app_data_helper.dart';
+import 'package:raven_verification/back_button.dart';
+import 'package:raven_verification/bvn/verification_screen.dart';
+import 'package:raven_verification/textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class MainIntro extends StatefulWidget {
-  const MainIntro({super.key});
+class EnterBVNScreen extends StatefulWidget {
+  const EnterBVNScreen({super.key});
 
   @override
-  State<MainIntro> createState() => _MainIntroState();
+  State<EnterBVNScreen> createState() => _EnterBVNScreenState();
 }
 
-class _MainIntroState extends State<MainIntro> {
+class _EnterBVNScreenState extends State<EnterBVNScreen> {
   final bvnController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -26,22 +26,22 @@ class _MainIntroState extends State<MainIntro> {
             child: ElevatedButton(
               onPressed: () async {
                 setState(() {});
-                if ((BVNPlugin.getBVN() == null ||
-                        BVNPlugin.getBVN().toString().length < 10) &&
+                if ((VerificationPlugin.getBVN() == null ||
+                        VerificationPlugin.getBVN().toString().length < 10) &&
                     bvnController.text.length < 10) {
                   Fluttertoast.showToast(
                       msg: "Please enter your BVN",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.TOP,
                       timeInSecForIosWeb: 1,
-                      backgroundColor: BVNPlugin.getBaseColor(),
+                      backgroundColor: VerificationPlugin.getBaseColor(),
                       textColor: Colors.white,
                       fontSize: 16.0);
                   return;
                 }
-                if ((BVNPlugin.getBVN() == null ||
-                    BVNPlugin.getBVN().toString().length < 10)) {
-                  BVNPlugin.setBVN(bvnController.text);
+                if ((VerificationPlugin.getBVN() == null ||
+                    VerificationPlugin.getBVN().toString().length < 10)) {
+                  VerificationPlugin.setBVN(bvnController.text);
                 }
 
                 Navigator.push(
@@ -52,10 +52,10 @@ class _MainIntroState extends State<MainIntro> {
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-                  backgroundColor:
-                      MaterialStateProperty.all(BVNPlugin.getBaseColor())),
+                  backgroundColor: MaterialStateProperty.all(
+                      VerificationPlugin.getBaseColor())),
               child: Text(
-                "Verify Now",
+                "Continue to verify",
                 style: subtitle.copyWith(
                     color: Colors.white, fontWeight: FontWeight.w600),
               ),
@@ -73,6 +73,7 @@ class _MainIntroState extends State<MainIntro> {
               Text("Take a clear selfie.",
                   style: headling1.copyWith(
                     fontSize: 20,
+                    color: VerificationPlugin.getBaseColor(),
                     fontWeight: FontWeight.bold,
                   )),
               const SizedBox(height: 8),
@@ -81,8 +82,8 @@ class _MainIntroState extends State<MainIntro> {
               const SizedBox(
                 height: 24,
               ),
-              if (BVNPlugin.getBVN() == null ||
-                  BVNPlugin.getBVN().toString().length < 10) ...[
+              if (VerificationPlugin.getBVN() == null ||
+                  VerificationPlugin.getBVN().toString().length < 10) ...[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -104,6 +105,8 @@ class _MainIntroState extends State<MainIntro> {
                       height: 4,
                     ),
                     TextField(
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 16),
                         keyboardType: TextInputType.number,
                         controller: bvnController,
                         decoration: InputDecoration(
@@ -177,7 +180,7 @@ class Item extends StatelessWidget {
             children: [
               Image.asset(
                 loadAsset(asset),
-                color: BVNPlugin.getBaseColor(),
+                color: VerificationPlugin.getBaseColor(),
                 height: 54,
                 width: 54,
               ),
@@ -191,7 +194,7 @@ class Item extends StatelessWidget {
           const SizedBox(height: 4),
           Text(title,
               style: subtitle.copyWith(
-                  color: BVNPlugin.getBaseColor(), fontSize: 13))
+                  color: VerificationPlugin.getBaseColor(), fontSize: 13))
         ],
       ),
     );

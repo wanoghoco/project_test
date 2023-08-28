@@ -1,4 +1,4 @@
-import 'package:bvn_selfie/back_button.dart';
+import 'package:raven_verification/back_button.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';

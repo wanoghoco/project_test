@@ -1,4 +1,4 @@
-import 'package:bvn_selfie/app_data_helper.dart';
+import 'package:raven_verification/app_data_helper.dart';
 import 'package:flutter/material.dart';
 
 class VerificationSuccessful extends StatefulWidget {
@@ -20,13 +20,13 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () async {
-                BVNPlugin.closePlugin(context, true);
+                VerificationPlugin.closePlugin(context, true);
               },
               style: ButtonStyle(
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-                  backgroundColor:
-                      MaterialStateProperty.all(BVNPlugin.getBaseColor())),
+                  backgroundColor: MaterialStateProperty.all(
+                      VerificationPlugin.getBaseColor())),
               child: const Text("Done"),
             )),
         const SizedBox(height: 24)
@@ -55,17 +55,17 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
                       children: [
                         Image.asset(
                           loadAsset("success.png"),
-                          color: BVNPlugin.getBaseColor(),
-                          height: 200,
+                          color: VerificationPlugin.getBaseColor(),
+                          height: 160,
                         ),
                         Positioned(
                           right: 0,
                           bottom: -16,
                           child: Image.asset(
                             loadAsset("check.png"),
-                            height: 54,
-                            width: 54,
-                            color: BVNPlugin.getBaseColor(),
+                            height: 44,
+                            width: 44,
+                            color: VerificationPlugin.getBaseColor(),
                           ),
                         ),
                       ],

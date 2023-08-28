@@ -1,4 +1,4 @@
-import 'package:bvn_selfie/app_data_helper.dart';
+import 'package:raven_verification/app_data_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:project_test/barcode_reader/barcode_scanner.dart';
@@ -34,12 +34,13 @@ class _AppMainState extends State<AppMain> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            BVNPlugin.startPlugin(
+                            VerificationPlugin.startPlugin(
                                 context,
-                                BVNPlugin.getInstance(
+                                VerificationPlugin.getInstance(
                                     baseColor: const Color(0xFF0B8376),
                                     clientBvn: "234333",
-                                    bearer: "",
+                                    bearer:
+                                        "RVSEC-d275c2c80ced595cbeff630921e31f35838b86380ba39b5ea560b291a0c27e6d2857019c39f946a418025524d9ec7f84-1677887040809",
                                     failiure: (data) {},
                                     success: (data) {}));
                           },
@@ -48,7 +49,34 @@ class _AppMainState extends State<AppMain> {
                               Icon(Icons.verified,
                                   color: Color(0xff755AE2), size: 24),
                               SizedBox(height: 8),
-                              Text("BVN Service",
+                              Text("BVN Ver",
+                                  style: TextStyle(
+                                      color: Color(0xff755AE2),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500))
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            VerificationPlugin.startPlugin(
+                                context,
+                                VerificationPlugin.getInstance(
+                                    type: VerificationType.docVerification,
+                                    baseColor: const Color(0xFF0B8376),
+                                    bearer:
+                                        "RVSEC-d275c2c80ced595cbeff630921e31f35838b86380ba39b5ea560b291a0c27e6d2857019c39f946a418025524d9ec7f84-1677887040809",
+                                    failiure: (data) {},
+                                    success: (data) {}));
+                          },
+                          child: const Column(
+                            children: [
+                              Icon(Icons.document_scanner,
+                                  color: Color(0xff755AE2), size: 24),
+                              SizedBox(height: 8),
+                              Text("Doc Ver",
                                   style: TextStyle(
                                       color: Color(0xff755AE2),
                                       fontSize: 12,
