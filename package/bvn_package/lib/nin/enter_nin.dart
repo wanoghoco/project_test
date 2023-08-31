@@ -69,6 +69,7 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
 
                     if (response['status'] != "success") {
                       showAlert(response['message']);
+                      return;
                     }
                     apiResponse = response;
                     VerificationPlugin.setMetaData(
