@@ -12,6 +12,7 @@ class VerificationPlugin {
   String? clientBVN;
   final Color baseColor;
   final VerificationType type;
+  final String? metaDataGetterUrl;
   final Function(dynamic) onSucess;
   final String bearerToken;
   final Function(dynamic) onFailure;
@@ -20,6 +21,7 @@ class VerificationPlugin {
   VerificationPlugin._(
       {required this.clientBVN,
       required this.onFailure,
+      this.metaDataGetterUrl,
       this.type = VerificationType.bvnVerification,
       required this.bearerToken,
       required this.baseColor,
@@ -30,11 +32,13 @@ class VerificationPlugin {
           String? clientBvn,
           VerificationType type = VerificationType.bvnVerification,
           required Color baseColor,
+          String? metaDataGetterUrl,
           required Function(dynamic) success,
           required Function(dynamic) failiure}) =>
       VerificationPlugin._(
           type: type,
           onFailure: failiure,
+          metaDataGetterUrl: metaDataGetterUrl,
           onSucess: success,
           baseColor: baseColor,
           clientBVN: clientBvn,
