@@ -63,7 +63,6 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
                     Navigator.pop(context);
                     if (response == "failed") {
                       showAlert("something went wrong... please try again");
-
                       return;
                     }
 
