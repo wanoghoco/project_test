@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:raven_verification/app_data_helper.dart';
 import 'package:raven_verification/back_button.dart';
 import 'package:raven_verification/bvn/verification_screen.dart';
+import 'package:raven_verification/progress_loader.dart';
+import 'package:raven_verification/server/server.dart';
 import 'package:raven_verification/textstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -47,7 +51,38 @@ class _EnterBVNScreenState extends State<EnterBVNScreen> {
                       VerificationPlugin.getBVN().toString().length < 10)) {
                     VerificationPlugin.setBVN(bvnController.text);
                   }
-
+                  if (VerificationPlugin.getmetaDataGetterUrl() != null) {
+                    showProgressContainer(context);
+                    var response = await Server(
+                            key:
+                                VerificationPlugin.getmetaDataGetterUrl() ?? "",
+                            isFull: true)
+                        .getRequest();
+                    Navigator.pop(context);
+                    if (response == "failed") {
+                      Fluttertoast.showToast(
+                          msg: "something went wrong... please try again",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: VerificationPlugin.getBaseColor(),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      return;
+                    }
+                    if (!(response as Map).containsKey("success")) {
+                      Fluttertoast.showToast(
+                          msg: "something went wrong... please try again",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: VerificationPlugin.getBaseColor(),
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                      return;
+                    }
+                    VerificationPlugin.setMetaData(response['data']);
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
