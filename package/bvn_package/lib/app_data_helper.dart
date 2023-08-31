@@ -1,27 +1,37 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:raven_verification/bvn/enter_bvn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:raven_verification/doc/doc_intro_screen.dart';
+import 'package:raven_verification/nin/nin_intro_screen.dart';
 
-enum VerificationType { bvnVerification, docVerification }
+enum VerificationType {
+  bvnVerification,
+  docVerification,
+  ninstandalone,
+  ninverification
+}
 
 class VerificationPlugin {
-  String? clientBVN;
+  String? clientNumber;
   final Color baseColor;
   final VerificationType type;
   final String? metaDataGetterUrl;
   final Function(dynamic) onSucess;
   final String bearerToken;
+  final String? initToken;
   final Function(dynamic) onFailure;
   static VerificationPlugin? _instance;
   String? metaData;
 
   VerificationPlugin._(
-      {required this.clientBVN,
+      {required this.clientNumber,
       required this.onFailure,
+      this.initToken,
       this.metaDataGetterUrl,
       this.type = VerificationType.bvnVerification,
       required this.bearerToken,
@@ -31,8 +41,9 @@ class VerificationPlugin {
 
   static VerificationPlugin getInstance(
           {required String bearer,
-          String? clientBvn,
+          String? clientNumber,
           String? metaData,
+          String? initToken,
           VerificationType type = VerificationType.bvnVerification,
           required Color baseColor,
           String? metaDataGetterUrl,
@@ -42,10 +53,11 @@ class VerificationPlugin {
           type: type,
           onFailure: failiure,
           metaData: metaData,
+          initToken: initToken,
           metaDataGetterUrl: metaDataGetterUrl,
           onSucess: success,
           baseColor: baseColor,
-          clientBVN: clientBvn,
+          clientNumber: clientNumber,
           bearerToken: bearer);
 
   static Future<void> startPlugin(
@@ -59,7 +71,10 @@ class VerificationPlugin {
         pageBuilder: (_, __, ___) =>
             (instance.type == VerificationType.bvnVerification)
                 ? const EnterBVNScreen()
-                : const DocIntroScreen(),
+                : (instance.type == VerificationType.ninstandalone ||
+                        instance.type == VerificationType.ninverification)
+                    ? const NInIntroScreen()
+                    : const DocIntroScreen(),
         transitionsBuilder: (_, animation, __, child) {
           return SlideTransition(
             position: Tween<Offset>(
@@ -75,12 +90,12 @@ class VerificationPlugin {
     return;
   }
 
-  static String? getBVN() {
-    return _instance!.clientBVN;
+  static String? getClientNumber() {
+    return _instance!.clientNumber;
   }
 
-  static void setBVN(String bvn) {
-    _instance?.clientBVN = bvn;
+  static void setClientNumber(String number) {
+    _instance?.clientNumber = number;
   }
 
   static void setMetaData(String metaData) {
@@ -91,8 +106,17 @@ class VerificationPlugin {
     return _instance?.metaDataGetterUrl;
   }
 
-  static String? getMetaData() {
-    return _instance?.metaData;
+  static Map getMetaData() {
+    try {
+      var data = jsonDecode(_instance?.metaData ?? "");
+      return data;
+    } catch (ex) {
+      return {};
+    }
+  }
+
+  static String? getIniToken() {
+    return _instance?.initToken;
   }
 
   static Color getBaseColor() {
@@ -101,6 +125,10 @@ class VerificationPlugin {
 
   static String getBearer() {
     return _instance!.bearerToken;
+  }
+
+  static VerificationType getVerificationType() {
+    return _instance!.type;
   }
 
   static Future<void> closePlugin(BuildContext context, bool success,
@@ -132,4 +160,15 @@ Future<File> compressImage({required File file}) async {
   );
 
   return result!;
+}
+
+showAlert(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 1,
+      backgroundColor: VerificationPlugin.getBaseColor(),
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
