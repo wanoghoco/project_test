@@ -189,6 +189,7 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
         .postRequest({
       "bvn": apiResponse['data']['bvn'],
       "nin": VerificationPlugin.getClientNumber(),
+      "meta_data": VerificationPlugin.getMetaData()
     });
     Navigator.pop(context);
     if (response.toString() == "failed") {
