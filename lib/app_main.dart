@@ -67,35 +67,11 @@ class _AppMainState extends State<AppMain> {
                             VerificationPlugin.startPlugin(
                                 context,
                                 VerificationPlugin.getInstance(
-                                    type: VerificationType.ninstandalone,
-                                    baseColor: const Color(0xFF0B8376),
-                                    bearer:
-                                        "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
-                                    failiure: (data) {},
-                                    success: (data) {}));
-                          },
-                          child: const Column(
-                            children: [
-                              Icon(Icons.document_scanner,
-                                  color: Color(0xff755AE2), size: 24),
-                              SizedBox(height: 8),
-                              Text("NIN",
-                                  style: TextStyle(
-                                      color: Color(0xff755AE2),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500))
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            VerificationPlugin.startPlugin(
-                                context,
-                                VerificationPlugin.getInstance(
+                                    initToken: "imiZ5J6HTZZi2jUoookqvEP30CKVR0",
                                     type: VerificationType.ninverification,
                                     baseColor: const Color(0xFF0B8376),
+                                    metaDataGetterUrl:
+                                        "https://2824-156-0-250-54.ngrok-free.app/user/initiate_nin_verification2",
                                     bearer:
                                         "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
                                     failiure: (data) {},
