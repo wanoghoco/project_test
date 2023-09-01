@@ -39,9 +39,9 @@ class _AppMainState extends State<AppMain> {
                                 VerificationPlugin.getInstance(
                                     clientNumber: "",
                                     baseColor: const Color(0xFF0B8376),
-                                    initToken: "imiZ5J6HTZZi2jUoookqvEP30CKVR0",
+                                    initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
                                     metaDataGetterUrl:
-                                        "https://2824-156-0-250-54.ngrok-free.app/user/initiate_bvn_verification2",
+                                        "https://personalbanking.getraventest.com/user/initiate_bvn_verification2",
                                     bearer:
                                         "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
                                     failiure: (data) {},
@@ -67,13 +67,13 @@ class _AppMainState extends State<AppMain> {
                             VerificationPlugin.startPlugin(
                                 context,
                                 VerificationPlugin.getInstance(
-                                    initToken: "imiZ5J6HTZZi2jUoookqvEP30CKVR0",
+                                    initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
                                     type: VerificationType.ninverification,
                                     baseColor: const Color(0xFF0B8376),
                                     metaDataGetterUrl:
-                                        "https://2824-156-0-250-54.ngrok-free.app/user/initiate_nin_verification2",
+                                        "https://personalbanking.getraventest.com/user/initiate_nin_verification2",
                                     bearer:
-                                        "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
+                                        "RVPUB-cb873afc3de2ca95a22b0d2378078b5d799be201af3ec077021213534f91-1677887040809",
                                     failiure: (data) {},
                                     success: (data) {}));
                           },

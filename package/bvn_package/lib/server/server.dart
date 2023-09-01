@@ -13,7 +13,7 @@ class Server {
   final int timeout;
   static http.Client client = http.Client();
   static bool forceLogout = false;
-  static const String _mainBaseUrl = "https://9846-156-0-250-54.ngrok-free.app";
+  static const String _mainBaseUrl = "https://baas.getraventest.com";
 
   /// base class for making http request[Server]
   Server(
