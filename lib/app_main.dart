@@ -40,10 +40,8 @@ class _AppMainState extends State<AppMain> {
                                     clientNumber: "",
                                     baseColor: const Color(0xFF0B8376),
                                     initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
-                                    metaDataGetterUrl:
-                                        "https://personalbanking.getraventest.com/user/initiate_bvn_verification2",
-                                    bearer:
-                                        "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
+                                    metaDataGetterUrl: "",
+                                    bearer: "",
                                     failiure: (data) {},
                                     success: (data) {}));
                           },
@@ -70,10 +68,8 @@ class _AppMainState extends State<AppMain> {
                                     initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
                                     type: VerificationType.ninverification,
                                     baseColor: const Color(0xFF0B8376),
-                                    metaDataGetterUrl:
-                                        "https://personalbanking.getraventest.com/user/initiate_nin_verification2",
-                                    bearer:
-                                        "RVPUB-cb873afc3de2ca95a22b0d2378078b5d799be201af3ec077021213534f91-1677887040809",
+                                    metaDataGetterUrl: "",
+                                    bearer: "",
                                     failiure: (data) {},
                                     success: (data) {}));
                           },
@@ -99,8 +95,7 @@ class _AppMainState extends State<AppMain> {
                                 VerificationPlugin.getInstance(
                                     type: VerificationType.docVerification,
                                     baseColor: const Color(0xFF0B8376),
-                                    bearer:
-                                        "RVPUB-ac560d8e0ec5b83225e3c3f8ce6f1d316f00b8c4f98db3458358b2c64b29-1655335692169",
+                                    bearer: "",
                                     failiure: (data) {},
                                     success: (data) {}));
                           },
