@@ -39,8 +39,9 @@ class _AppMainState extends State<AppMain> {
                                 VerificationPlugin.getInstance(
                                     clientNumber: "",
                                     baseColor: const Color(0xFF0B8376),
-                                    initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
-                                    metaDataGetterUrl: "",
+                                    initToken: "kE453rhYsRJa05Gb4QxlqKwlR9dEER",
+                                    metaDataGetterUrl:
+                                        "https://personalbanking.getraventest.com/user/initiate_bvn_verification2",
                                     bearer: "",
                                     failiure: (data) {},
                                     success: (data) {}));
