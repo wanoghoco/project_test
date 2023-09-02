@@ -282,7 +282,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(800);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
