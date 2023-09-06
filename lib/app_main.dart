@@ -37,6 +37,7 @@ class _AppMainState extends State<AppMain> {
                             VerificationPlugin.startPlugin(
                                 context,
                                 VerificationPlugin.getInstance(
+                                    atlasUrl: "https://baas.getraventest.com",
                                     clientNumber: "33333",
                                     baseColor: const Color(0xFF0B8376),
                                     initToken: "kE453rhYsRJa05Gb4QxlqKwlR9dEER",
@@ -66,6 +67,7 @@ class _AppMainState extends State<AppMain> {
                             VerificationPlugin.startPlugin(
                                 context,
                                 VerificationPlugin.getInstance(
+                                    atlasUrl: "https://baas.getraventest.com",
                                     initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
                                     type: VerificationType.ninverification,
                                     baseColor: const Color(0xFF0B8376),
@@ -94,6 +96,7 @@ class _AppMainState extends State<AppMain> {
                             VerificationPlugin.startPlugin(
                                 context,
                                 VerificationPlugin.getInstance(
+                                    atlasUrl: "https://baas.getraventest.com",
                                     type: VerificationType.docVerification,
                                     baseColor: const Color(0xFF0B8376),
                                     bearer: "",

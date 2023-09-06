@@ -14,6 +14,7 @@ enum VerificationType { bvnVerification, docVerification, ninverification }
 class VerificationPlugin {
   String? clientNumber;
   final Color baseColor;
+  final String atlasUrl;
   final VerificationType type;
   final String? metaDataGetterUrl;
   final Function(dynamic) onSucess;
@@ -26,6 +27,7 @@ class VerificationPlugin {
   VerificationPlugin._(
       {required this.clientNumber,
       required this.onFailure,
+      required this.atlasUrl,
       this.initToken,
       this.metaDataGetterUrl,
       this.type = VerificationType.bvnVerification,
@@ -38,6 +40,7 @@ class VerificationPlugin {
           {required String bearer,
           String? clientNumber,
           String? metaData,
+          required String atlasUrl,
           String? initToken,
           VerificationType type = VerificationType.bvnVerification,
           required Color baseColor,
@@ -49,6 +52,7 @@ class VerificationPlugin {
           onFailure: failiure,
           metaData: metaData,
           initToken: initToken,
+          atlasUrl: atlasUrl,
           metaDataGetterUrl: metaDataGetterUrl,
           onSucess: success,
           baseColor: baseColor,
@@ -86,6 +90,10 @@ class VerificationPlugin {
 
   static String? getClientNumber() {
     return _instance!.clientNumber;
+  }
+
+  static String getAtlasUrl() {
+    return _instance!.atlasUrl;
   }
 
   static void setClientNumber(String number) {

@@ -13,7 +13,6 @@ class Server {
   final int timeout;
   static http.Client client = http.Client();
   static bool forceLogout = false;
-  static const String _mainBaseUrl = "https://baas.getraventest.com";
 
   /// base class for making http request[Server]
   Server(
@@ -26,7 +25,7 @@ class Server {
   Future<dynamic> uploadFile(String filePath, Map<String, dynamic> form) async {
     try {
       var dio = di.Dio();
-      dio.options.baseUrl = _mainBaseUrl;
+      dio.options.baseUrl = VerificationPlugin.getAtlasUrl();
       dio.options.connectTimeout = const Duration(seconds: 35000);
       dio.options.receiveTimeout = const Duration(seconds: 35000);
       dio.options.headers = await _getHeader();
@@ -59,7 +58,7 @@ class Server {
   Future<dynamic> getRequest() async {
     try {
       return await client
-          .get(Uri.parse(isFull ? key : _mainBaseUrl + key),
+          .get(Uri.parse(isFull ? key : VerificationPlugin.getAtlasUrl() + key),
               headers: await _getHeader(init: true))
           .then((response) async {
         if (response.statusCode == 406) {}
@@ -80,8 +79,10 @@ class Server {
   Future<dynamic> postRequest(Map<String, dynamic> body) async {
     try {
       return await client
-          .post(Uri.parse(isFull ? key : _mainBaseUrl + key),
-              body: convert.json.encode(body), headers: await _getHeader())
+          .post(
+              Uri.parse(isFull ? key : VerificationPlugin.getAtlasUrl() + key),
+              body: convert.json.encode(body),
+              headers: await _getHeader())
           .then((response) {
         if (response.statusCode == 406) {}
         return convert.jsonDecode(response.body);
