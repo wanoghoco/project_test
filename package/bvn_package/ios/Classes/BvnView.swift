@@ -32,7 +32,9 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
     var unlocked=false;
     var running=false;
     var processStarted=false;
-    
+    let context = CIContext()
+    var detector: CIDetector
+    var takePhototoValue=false;
     
     let noFaceMap: [String: Any] = [
         "type": Helpers.NO_FACE_DETECTED
@@ -42,6 +44,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
         "type": Helpers.FACE_DETECTED
         // Add other key-value pairs as needed
     ]
+    
     init(messenger: FlutterBinaryMessenger, frame: CGRect, viewId: Int64, arguments: Any? = nil) {
         self.messenger = messenger
         self.frame = frame
@@ -49,11 +52,12 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
       
         self.arguments = arguments
         self.channel = FlutterMethodChannel(name: "bvn_selfie", binaryMessenger: messenger)
+        self.detector = CIDetector(ofType: CIDetectorTypeFace, context: context, options: [CIDetectorAccuracy: CIDetectorAccuracyLow])!
         super.init()
         self.channel.setMethodCallHandler ({(call : FlutterMethodCall, result : @escaping FlutterResult)-> Void in
             
             if(call.method==Helpers.takePhoto){
-                self.takePhoto(didOutput: self.sampleBuffer as! CMSampleBuffer)
+                self.takePhoto()
             }
             if(call.method=="destroyer"){
                 self.dispose();
@@ -62,7 +66,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
           
             
         })
-       
+        detector = CIDetector(ofType: CIDetectorTypeFace, context: context, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])!
     }
     
     
@@ -72,6 +76,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
             self.configureCamera()
         }
     }
+    
     func view() -> UIView {
         loadCamera();
         return uiView;
@@ -131,8 +136,130 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
                 debugPrint("unable to get image from sample buffer")
                 return
             }
-           self.startDetection(didOutput: sampleBuffer)
+             self.sampleBuffer=sampleBuffer;
+             self.newDetectionFlow()
         }
+    
+    
+    func newDetectionFlow(){
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(self.sampleBuffer as! CMSampleBuffer) else {
+                return
+                
+            }
+        let features = self.detector.features(in: CIImage(cvImageBuffer:pixelBuffer))
+        if(features.isEmpty){
+            
+            self.unlocked=true
+            if (!self.running && self.unlocked) {
+                self.running = true
+                let thread = Thread {
+                    do {
+                        Thread.sleep(forTimeInterval: 2)
+                    } catch {
+                        print(error)
+                    }
+                    
+                    if self.unlocked {
+                        DispatchQueue.main.async {
+                            self.running = false
+                            self.channel.invokeMethod(Helpers.facialGesture,arguments:self.noFaceMap);
+                        }
+                       
+                    }else{
+                        self.running = false
+                    }
+                }
+                thread.start()
+            }
+        }
+        else{
+            self.unlocked=false;
+            self.channel.invokeMethod(Helpers.facialGesture,arguments:self.faceMap);
+        }
+        for feature in features as! [CIFaceFeature] {
+            //print(feature.mouthPosition)
+            let value=isFaceCentered(faceFeature: feature, inFrame: self.frame);
+            if(value>800&&value<1300){
+                print("_________is center")
+                checkLiveness(feature: feature)
+            }
+            else{
+                print("leaving center")
+            }
+            
+            
+        }
+    }
+    
+    func isFaceCentered(faceFeature: CIFaceFeature, inFrame frame: CGRect) -> CGFloat {
+        // Calculate the center of the frame
+        let frameCenter = CGPoint(x: frame.midX, y: frame.midY)
+        
+        // Calculate the center of the detected face
+        let faceCenter = CGPoint(x: faceFeature.bounds.midX, y: faceFeature.bounds.midY)
+        
+        // Calculate the distance between the face center and the frame center
+        let distance = sqrt(pow(frameCenter.x - faceCenter.x, 2) + pow(frameCenter.y - faceCenter.y, 2))
+        
+        // Check if the distance is within the defined tolerance
+        
+        return distance
+    }
+    
+    private func checkLiveness(feature face: CIFaceFeature){
+        if face.hasLeftEyePosition && face.hasRightEyePosition {
+                            let leftEye = face.leftEyePosition
+                            let rightEye = face.rightEyePosition
+            if(counter<=3){
+              self.invokeGesture(actionType:Helpers.ROTATE_HEAD);
+            }
+            else{
+                self.invokeGesture(actionType:Helpers.SMILE_AND_OPEN_ACTION);
+                
+                let thread = Thread {
+                    do {
+                        Thread.sleep(forTimeInterval: 1.5)
+                    } catch {
+                        print(error)
+                    }
+                    
+                    if(!self.running){
+                        if(self.takePhototoValue){
+                            return;
+                        }
+                        DispatchQueue.main.async {
+                            self.takePhoto();
+                            self.takePhototoValue=true;
+                        }
+                    }
+                }
+                thread.start()
+               
+                
+            }
+            if(face.hasFaceAngle){
+                if(face.faceAngle<(-95)&&counter<=1){
+                    counter+=1;
+                    let actionMap: [String: Any] = [
+                        "progress": counter
+                    ]
+                    self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                    return;
+                }
+                print(face.faceAngle)
+                if(face.faceAngle<(-100)&&counter>=2&&counter<=3){
+                    counter+=1;
+                    let actionMap: [String: Any] = [
+                        "progress": counter
+                    ]
+                    self.channel.invokeMethod(Helpers.onProgressChange, arguments: actionMap);
+                    
+                }
+         
+            }
+             
+        }
+    }
     
     
     private func startDetection(didOutput sampleBuffer: CMSampleBuffer){
@@ -243,7 +370,7 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
              }
             if(self.canSnap){
                 self.canSnap=false;
-                takePhoto(didOutput: sampleBuffer);
+                takePhoto();
             }
             if(!processStarted){
               //  processStarted=true;
@@ -275,8 +402,8 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
 
      }
     
-    private func takePhoto(didOutput sampleBuffer: CMSampleBuffer){
-        let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)!
+    private func takePhoto(){
+        let imageBuffer = CMSampleBufferGetImageBuffer(self.sampleBuffer as! CMSampleBuffer)!
         let ciimage = CIImage(cvPixelBuffer: imageBuffer)
         let image = self.convert(cmage: ciimage)
         let success = self.saveImage(image: image)
@@ -455,6 +582,8 @@ class BvnView:NSObject,FlutterPlatformView,AVCaptureVideoDataOutputSampleBufferD
      
 }
 
+ 
+
 extension UIImage {
     func rotate(radians: CGFloat) -> UIImage {
         let rotatedSize = CGRect(origin: .zero, size: size)
@@ -476,5 +605,7 @@ extension UIImage {
 
         return self
     }
+    
+    
 }
  

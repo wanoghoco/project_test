@@ -33,14 +33,14 @@ public class BvnSelfiePlugin implements FlutterPlugin, MethodCallHandler, Activi
   private VerificationService verificationService;
     TextureRegistry.SurfaceTextureEntry entry;
 
-    public static String[] storge_permissions = {
+    final  String[] storge_permissions = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static String[] storge_permissions_33 = {
+    final  String[] storge_permissions_33 = {
             Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.CAMERA
     };

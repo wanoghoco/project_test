@@ -38,11 +38,10 @@ class _AppMainState extends State<AppMain> {
                                 context,
                                 VerificationPlugin.getInstance(
                                     atlasUrl: "https://baas.getraventest.com",
-                                    clientNumber: "33333",
+                                    clientNumber: "22438527991",
                                     baseColor: const Color(0xFF0B8376),
-                                    initToken: "kE453rhYsRJa05Gb4QxlqKwlR9dEER",
-                                    metaDataGetterUrl:
-                                        "https://personalbanking.getraventest.com/user/initiate_bvn_verification2",
+                                    metaData:
+                                        "getraventestgetraventestgetraventestgetraventestgetraventestgetraventestgetraventestgetraventestgetraventestgetraventestgetraventest",
                                     bearer: "",
                                     failiure: (data) {},
                                     success: (data) {}));
@@ -68,7 +67,6 @@ class _AppMainState extends State<AppMain> {
                                 context,
                                 VerificationPlugin.getInstance(
                                     atlasUrl: "https://baas.getraventest.com",
-                                    initToken: "S9RncxsH7CvdwdDIEbZSeYm78A0c1A",
                                     type: VerificationType.ninverification,
                                     baseColor: const Color(0xFF0B8376),
                                     metaDataGetterUrl: "",

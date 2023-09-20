@@ -19,6 +19,7 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
         FocusManager.instance.primaryFocus!.unfocus();
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 24),

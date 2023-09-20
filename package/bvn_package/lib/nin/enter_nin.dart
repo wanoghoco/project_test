@@ -24,7 +24,7 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
     ninController.text = VerificationPlugin.getClientNumber() ?? "";
   }
   final ninController = TextEditingController();
-  var apiResponse = {};
+  var apiData = {};
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -74,12 +74,13 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
                       showAlert(response['message']);
                       return;
                     }
-                    apiResponse = response;
+                    apiData = response['data'];
                     VerificationPlugin.setMetaData(
                         jsonEncode(response['data'] ?? ""));
+                  } else {
+                    apiData = VerificationPlugin.getMetaData();
                   }
-
-                  if ((apiResponse['data']['bvn'] ?? "") == "") {
+                  if ((apiData['bvn'] ?? "") == "") {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -162,7 +163,7 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
                                             fontSize: 13)),
                                     TextSpan(
                                         text:
-                                            "to get your BVN Number, must be with the registered phone number.")
+                                            "to get your NIN Number, must be with the registered phone number.")
                                   ],
                                   style: subtitle.copyWith(fontSize: 13))),
                         )
@@ -178,7 +179,7 @@ class _EnterNinScreenState extends State<EnterNinScreen> {
     showProgressContainer(context);
     var response = await Server(key: "/nin/initiate_nin_with_bvn_verification")
         .postRequest({
-      "bvn": apiResponse['data']['bvn'],
+      "bvn": apiData['bvn'],
       "nin": VerificationPlugin.getClientNumber(),
       "meta_data": VerificationPlugin.getMetaData()
     });
