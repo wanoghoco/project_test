@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:raven_verification/bvn/bvn_intro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -20,6 +18,7 @@ class VerificationPlugin {
   final Function(dynamic) onSucess;
   final String bearerToken;
   final String? initToken;
+  final Function(String) onErrorMessage;
   final Function(dynamic) onFailure;
   static VerificationPlugin? _instance;
   String? metaData;
@@ -28,6 +27,7 @@ class VerificationPlugin {
       {required this.clientNumber,
       required this.onFailure,
       required this.atlasUrl,
+      required this.onErrorMessage,
       this.initToken,
       this.metaDataGetterUrl,
       this.type = VerificationType.bvnVerification,
@@ -40,6 +40,7 @@ class VerificationPlugin {
           {required String bearer,
           String? clientNumber,
           String? metaData,
+          required Function(String) onErrorMessage,
           required String atlasUrl,
           String? initToken,
           VerificationType type = VerificationType.bvnVerification,
@@ -49,6 +50,7 @@ class VerificationPlugin {
           required Function(dynamic) failiure}) =>
       VerificationPlugin._(
           type: type,
+          onErrorMessage: onErrorMessage,
           onFailure: failiure,
           metaData: metaData,
           initToken: initToken,
@@ -146,6 +148,10 @@ class VerificationPlugin {
     _instance!.onFailure(payload);
     return;
   }
+
+  static void showPluginError(String message) {
+    _instance!.onErrorMessage(message);
+  }
 }
 
 String loadAsset(String asset) {
@@ -165,12 +171,5 @@ Future<File> compressImage({required File file}) async {
 }
 
 showAlert(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.SNACKBAR,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  VerificationPlugin.showPluginError(message);
 }

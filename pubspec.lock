@@ -374,7 +374,7 @@ packages:
       path: "package/bvn_package"
       relative: true
     source: path
-    version: "0.0.4"
+    version: "0.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
