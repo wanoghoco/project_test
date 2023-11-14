@@ -48,7 +48,7 @@ class _VerificationSuccessfulState extends State<VerificationSuccessful> {
                     children: [
                       SizedBox(height: size.height * 0.06),
                       const SizedBox(height: 24),
-                      Text("🥳Verification Sumitted",
+                      Text("🥳Verification Submitted",
                           style: subtitle.copyWith(
                               fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),

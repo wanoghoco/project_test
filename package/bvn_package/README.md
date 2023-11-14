@@ -68,7 +68,7 @@ atlasUrl : atlasURL
 clientBVN: client bvn is optional, the plugin also handles collection of BVN when it empty or not passed
 baseColor: you can customimze the plugin to suite your app primaryColor
 metaData: data sent back to your server
-bearerToke: onboard on atlas to option your public key
+bearerToken: onboard on atlas to option your public key
 onErrorMessage: callback for any error, all errors are sent via this callback and the plugin depends on the app toast to show errors via this callback
 success: callback for on successful verification
 failiure: callback when verificatio fails
