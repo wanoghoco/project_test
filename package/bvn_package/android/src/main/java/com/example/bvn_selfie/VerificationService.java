@@ -9,6 +9,7 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.WindowManager;
@@ -259,12 +260,12 @@ public class VerificationService implements ImageAnalysis.Analyzer {
                     callbacks.onProgressChanged(counter);
                     return;
                 }
-                if(rotateHeadXNEG(face)&&counter==2){
+                if(rotateHeadX(face)&&counter==2){
                     counter+=1;
                     callbacks.onProgressChanged(counter);
                     return;
                 }
-                if(rotateHeadYNEG(face)&&counter==3){
+                if(rotateHeadX(face)&&counter==3){
                     counter+=1;
                     step=2;
                     callbacks.onProgressChanged(counter);
@@ -340,7 +341,7 @@ public class VerificationService implements ImageAnalysis.Analyzer {
 
         float degreesX =face.getHeadEulerAngleX();
         System.out.println(degreesX);
-        if (degreesX > 10) {
+        if (degreesX > 10||degreesX<-20) {
 
            return true;
         }
@@ -349,17 +350,8 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     private boolean rotateHeadY(Face face){
 
         float degreesY =face.getHeadEulerAngleY();
-        if (degreesY > 10) {
-
-            return true;
-        }
-        return false;
-    }
-
-    private boolean rotateHeadXNEG(Face face){
-
-        float degreesX =face.getHeadEulerAngleX();
-        if (degreesX < -1) {
+        Log.d("DEGREE Y", String.valueOf(degreesY));
+        if (degreesY > 10||degreesY<-20) {
 
             return true;
         }
@@ -367,15 +359,8 @@ public class VerificationService implements ImageAnalysis.Analyzer {
     }
 
 
-    private boolean rotateHeadYNEG(Face face){
 
-        float degreesY =face.getHeadEulerAngleY();
-        if (degreesY < -1) {
 
-            return true;
-        }
-        return false;
-    }
 
 
     private File saveFile(){

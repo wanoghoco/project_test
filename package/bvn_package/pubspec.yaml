@@ -1,6 +1,6 @@
 name: raven_verification
 description: a flutter plugin for BVN verification in Nigeria
-version: 0.0.7
+version: 0.0.9
 homepage:
 
 environment:
